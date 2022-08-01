@@ -183,7 +183,7 @@ class Solution
             Node* node = it.first;
             int line = it.second;
             
-            if(mpp.find(line) == mpp.end())//if that node is not in the map, then add it into the map
+            if(mpp.find(line) == mpp.end())//if that node is not in the map, then add it into the map, whenever the first node in the line is visited, then it is put into the map and that gives us the ans
                 mpp[line] = node->data;
                 
             if(node->left != NULL)//if left node is not null
@@ -352,5 +352,74 @@ public:
         
     }
 };
+
+
+
+14.) Bottom View of a Binary Tree
+
+                      20
+                    /    \
+                  8       22
+                /   \        \
+              5      3       25
+                    /   \      
+                  10    14
+    
+    -->Here the bottom view is 5, 10, 3, 14, 25
+    -->Draw parallel vertical lines, the bottom view is the last element present in the vertical elements (also known as the vertical order traversal)
+    -->From a particular node, if we travel left then [level=level-1], if we travel right the [level=level+1], and root node will be level 0 
+    -->Here, we are to going to maintain a queue and a map data structure, 
+    -->Queue DS stores (node,line) of all nodes available by travelling left and right , once a node's left and right are visited then the pair(line,pair) is added into the map DS
+    -->Map DS stores (line, node) and only one pair per vertical line
+    -->Map stores every thing in ascending order, -2, -1, 0, 1, 2 it stores in this way
+    -->Then Traverse the map, where the node is pushed into the vector iteratively each time, where we get the bottom view of Binary Tree stored in the vector
+    
+    
+    
+    
+class Solution {
+  public:
+    vector <int> bottomView(Node *root) {
+        vector<int> ans;//vector which stores the bottom view of the binary tree
+        if(root == NULL)//if the tree is empty, return null
+            return ans;
+            
+        queue<pair<Node*, int>> q; // queue data structure which stores (node,line)
+        map<int, int> mpp;//stores the (line, node), but only one pair per line
+        
+        q.push({root, 0});// we push (root,0) i.e we push node and the line at which that 
+        //node is present
+        while(!q.empty())//we traverse until the queue is empty
+        {
+            auto it = q.front();//iterator it will always point to the front node of the queue
+            q.pop();//that node which is put into the queue is poped
+            
+            Node* node = it.first;//node is first part of the queue
+            int line = it.second;// the line in which the node is present is the second part of the queue
+            mpp[line] = node->data;// here each time from the queue, we are storing into the map, the data of the node with the line
+            
+            
+            //the diff b/w top view and bottom view is that in top view only the first occurence of a node in line is pushed into the map
+            //but in bottom it is done until the last level by travelling downwards until the last level and get updated each time
+            
+            
+            if(node->left != NULL)//we check the node->left is null, if not 
+            //null then push that pair into the queue
+                q.push({node->left, line-1});//we push that node->left and making the line-1
+            
+            if(node->right != NULL)//we check the node->right is null, if not 
+            //null then push that pair into the queue
+                q.push({node->right, line+1});//we push that node->right and making the line+1
+            
+        }
+        
+        for(auto it: mpp)
+                ans.push_back(it.second);// iteratively, we are pushing the only the node into the map
+                
+        return ans;
+    }
+    
+};
+
 
 
