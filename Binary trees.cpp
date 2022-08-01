@@ -341,10 +341,13 @@ The idea is to check whether two tree are one and the same
 
 class Solution {
 public:
-    bool isSameTree(TreeNode* p, TreeNode* q) {
-        if(p == NULL || q == NULL)// if either one of them is null, it is checked that if p is equal to q, if equal then return true else false
-           return (p==q);
-         return(p->val == q->val) && isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+    bool isSameTree(TreeNode* p, TreeNode* q) {//here p is the root of the first tree and q is the root of the second tree
+        if(p == NULL && q == NULL)// if both of the first node is NULL and equal then return true
+           return true;
+        else if(p == NULL || q == NULL)// if only either one of them is NULL, but the other node is not NULL, then return false
+            return false;
+        else
+            return(p->val == q->val) && isSameTree(p->left, q->left) && isSameTree(p->right, q->right);//else check the value by recursively travelling to the left and right thereby checking if the node values are equal, if they are equal then return true else return false
         
     }
 };
