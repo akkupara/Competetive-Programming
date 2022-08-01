@@ -347,7 +347,8 @@ public:
         else if(p == NULL || q == NULL)// if only either one of them is NULL, but the other node is not NULL, then return false
             return false;
         else
-            return(p->val == q->val) && isSameTree(p->left, q->left) && isSameTree(p->right, q->right);//else check the value by recursively travelling to the left and right thereby checking if the node values are equal, if they are equal then return true else return false
+            return(p->val == q->val) && isSameTree(p->left, q->left) && isSameTree(p->right, q->right);//else check the value by recursively travelling to the left and right thereby 
+            //checking if the node values are equal, if they are equal then return true else return false
         
     }
 };
