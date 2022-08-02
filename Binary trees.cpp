@@ -510,4 +510,51 @@ vector<int> Solution::solve(TreeNode* A, int B) {
 This is a typical DFS traversal and TC=0(n) and SC=0(H) where H is the height of the tree
 
 
+17.) Lowest common ancestor of a binary tree
+
+              5
+           /    \
+         4       6
+        /         \
+       3           7
+                    \
+                     8
+n1 = 7, n2 = 8
+Output: 7
+    
+-->given two nodes, we need to find the path of root to individual 
+-->we will have two arrays or vector to store the path
+--> for node n1=7, path = [5, 6, 7]
+             n2=8, path = [5, 6, 7, 8]
+-->we keep on check whether both path vector are same
+-->at one point the two vectors wont be the same, return the previous node where the equality went false
+-->here in this case, at 8 the equality went false, so return the previous node as the answer
+
+--> here also we use the DFS traversal(preorder traversal)
+--> here the TC = SC = 0(N)
+    
+    
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == NULL || root == p || root == q)//if we root is NULL, the nodes p and q given, then we return the node itself
+            return root;
+        
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);//move to left
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);// move to right
+        
+        if(left == NULL)//if one of the node is NULL , return the other
+            return right;
+        else if (right == NULL)//if one of the node is NULL , return the other
+            return left;
+        else//this case give us the ans
+            return root;// if both left and right are not NULL, then we the return the node itself
+    }
+};
+
+
+
+
+18.)
+
 
