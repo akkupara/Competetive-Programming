@@ -423,3 +423,8 @@ class Solution {
 
 
 
+15.) Post Oder traversal of a binary tree
+
+--> can be solved by using 2 stack and one stack method
+-->post order----Left, right, root
+-->
