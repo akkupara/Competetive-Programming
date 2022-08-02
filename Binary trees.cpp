@@ -33,6 +33,9 @@ public:
 
 
 
+
+
+
 2.) Binary Tree PreOrder Traversal
     
 class Solution {
@@ -475,7 +478,7 @@ bool getpath(TreeNode* root, vector<int> &arr, int x)//root is the place where w
  {
      if(root == NULL)//if root is NULL, then return false
         return false;
-     arr.push_back(root->val);//first push the root into the arr vector
+     arr.push_back(root->val);//always add that node into the arr vector
      
      if(root->val == x)//check if the value matches, if it does return true
         return true;
@@ -504,7 +507,7 @@ vector<int> Solution::solve(TreeNode* A, int B) {
 }
 
 
-This is a typical DFS traversal
+This is a typical DFS traversal and TC=0(n) and SC=0(H) where H is the height of the tree
 
 
 
