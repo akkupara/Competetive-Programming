@@ -427,4 +427,84 @@ class Solution {
 
 --> can be solved by using 2 stack and one stack method
 -->post order----Left, right, root
--->
+
+Using 2 stack method:
+
+
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int>postorder;//this vector stores the postorder traversal of the binary tree
+        if(root == NULL)//if the tree is empty then return empty vector
+            return postorder;
+        
+        stack<TreeNode*> st1, st2;//creating two stacks st1, st2
+        //the first stack st1 stores the visited nodes
+        //the second stack st2 stores the postorder traversal of the binary tree
+        st1.push(root);//first push the root in the stack
+        
+        while(!st1.empty())
+        {
+            root = st1.top();// make root the topmost element of the stack
+            st1.pop();//and pop it from the stack
+            st2.push(root);// push that value into the second stack st2
+            
+            if(root->left != NULL)//if root of left is not null, then push it into the stack
+                st1.push(root->left);
+            
+            if(root->right != NULL)//if root of right is not null, then push it into the stack
+                st1.push(root->right);
+            
+        }
+        
+        while(!st2.empty())
+        {
+            postorder.push_back(st2.top()->val);//putting the values of st2 from top to bottom in the postorder vector
+            st2.pop();//once a node is pushed into the vector, that element is poped from the stack
+        }
+        
+        return postorder;
+    }
+};
+
+
+16.) Root to node path in a binary tree
+
+bool getpath(TreeNode* root, vector<int> &arr, int x)//root is the place where we are goint to start, arr stores the root to node path A
+ //and x is the node to which the path has to be found
+ {
+     if(root == NULL)//if root is NULL, then return false
+        return false;
+     arr.push_back(root->val);//first push the root into the arr vector
+     
+     if(root->val == x)//check if the value matches, if it does return true
+        return true;
+        
+     else if(getpath(root->left, arr, x) || getpath(root->right, arr, x))//if either left or right node value matches then return true with the path arr(vector)
+        return true;
+        
+    else{
+        arr.pop_back();// if value not found in either left and right, then remove the last element from the vector
+        return false;// if not found then return false
+    }
+    
+        
+    
+     
+ }
+vector<int> Solution::solve(TreeNode* A, int B) {
+    vector<int> arr; // to store the path from the root to the a given node
+    if(A == NULL)
+        return arr;
+    getpath(A, arr, B);
+    
+    return arr;
+    
+    
+}
+
+
+This is a typical DFS traversal
+
+
+
