@@ -555,6 +555,14 @@ public:
 
 
 
-18.)
+18.) Maximum width of a binary tree
+
+--> Max Width is no of nodes in a level b/w any 2 nodes
+--> Level order traversal is used to find the max width
+--> If we index the nodes, it will be easier to find the width
+--> In any level, max width = last index - first index + 1
+--> For indexing, 
+        if the index of a node is i, then left index = (2*i) + 1        this is for 0 based indexing
+                                         right index = (2*i) + 2
 
 
