@@ -1,5 +1,18 @@
 1.) Binary Tree Inorder Traversal
 
+--> Inorder = left, root, right
+
+
+
+        10
+     /      \ 
+    20       30 
+  /    \    /
+ 40    60  50
+    
+Output: 40 20 60 10 50 30
+
+
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
@@ -9,10 +22,11 @@ public:
         vector<int> inorder; // creating a vector to store the inorder traversal of the nodes
         while(true)
         {
-            if(node != NULL)
+            if(node != NULL)//if the node is not NULL, simply push the node into the stack and move left
+            //the whole crux is, if node is not NULL, simply keep on moving left until we reach a NULL node
             {
-                st.push(node);
-                node = node->left;
+                st.push(node);//push the node into the stack
+                node = node->left;//keep on moving left until we encounter a NULL
             }
             else//if the node == NULL
             {
@@ -37,11 +51,25 @@ public:
 
 
 2.) Binary Tree PreOrder Traversal
+
+
+-->preOrder = root, left, right
+
+
+       6
+     /   \
+    3     2
+     \   / 
+      1 2
+    
+    
+Output: 6 3 1 2 2 
+
     
 class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
-        vector<int> preorder;
+        vector<int> preorder;// we start the traversal from the root
         if(root == NULL) //when root is null, then return empty vector
             return preorder;
         stack<TreeNode*> st;//creating a stack
@@ -59,7 +87,7 @@ public:
             if(root->left != NULL)
                st.push(root->left);//if the left node is not null, then put the  element into the stack
              
-        //first we put the right node into the stack and then the left node becuase it is a stack LIFO
+        //first we put the right node into the stack and then the left node becuase it is a stack LIFO, i.e only then we will get the left node at the top of the stack
             
         }
         return preorder;
@@ -71,6 +99,11 @@ public:
 
 
 3.) Maximum depth of a binary tree
+
+
+-->  maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node
+
+
 
 class Solution {
 public:
@@ -554,8 +587,59 @@ public:
 
 
 
+18.) Minimum Depth of a Binary Tree
 
-18.) Maximum width of a binary tree
+--> minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node. 
+
+    
+            1
+          /   \
+         3     2
+        /
+       4           
+
+Output: 2
+    
+    
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(root == NULL)//when the tree is empty return 0 since, the depth is zero
+            return 0;
+        if(root->left == NULL && root->right == NULL)//when the tree has only one node,
+            //then obviously the depth of the tree will be 1
+            return 1;// so we return 1 as the maximum depth
+        
+        int lh, rh;//we declare the right and left height
+        
+        if(root->left != NULL)//if left node is not NULL, then recursively travel to the left
+        {
+            lh = minDepth(root->left);// do the recursive call to root->left(other left nodes)
+        }
+        else
+            lh = INT_MAX;// if root of the left is NULL, then make it INT_MAX
+        
+        
+        if(root->right != NULL)//if right node is not NULL, then recursively travel to the right
+        {
+            rh = minDepth(root->right);// do the recursive call to root->right(other right nodes)
+        }
+        else
+            rh = INT_MAX;//if right of the root is NULL, then make it INT_MAX
+        
+        
+        return 1 + min(lh, rh);
+        
+    }
+};
+
+
+
+
+
+
+
+19.) Maximum width of a binary tree
 
 --> Max Width is no of nodes in a level b/w any 2 nodes
 --> Level order traversal is used to find the max width
