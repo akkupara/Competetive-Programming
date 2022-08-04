@@ -123,6 +123,24 @@ public:
 4.) Check for balanced binary tree
 
 
+--> The main condition for balanced binary tree is that abs(right_height - left_height) <= 1
+        
+ A height balanced tree
+        1
+     /     \                here lh = 2 and rh = 1, so 2-1 = 1 <= 1, condition holds so balanced tree
+   10      39
+  /
+5
+
+An unbalanced tree
+        1
+     /    
+   10                       here lh = 2 and rh = 0, so 2-0 = 2 not <= 1, condition does not hold so not a balanced binary tree
+  /
+5
+
+
+
 class Solution {
 public:
     bool isBalanced(TreeNode* root) {
