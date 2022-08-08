@@ -174,6 +174,11 @@ public:
 
 5.) Diameter of a binary tree
 
+--> It's the longest path b/w two nodes in a binary tree
+--> This path doesn't necessarily need to pass via the root of the tree
+--> Beginning, at each node we are calculating the max height = lh+rh
+--> 
+
 
 class Solution {
 public:
