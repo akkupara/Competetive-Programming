@@ -280,18 +280,21 @@ public:
     {
         if(node == NULL)
             return 0;
-        int left = max(0, maxipath(node->left, maxi));
-        int right = max(0, maxipath(node->right, maxi));
+        int left = max(0, maxipath(node->left, maxi));// we travel to the left to find the value, we avoid if it is negative, that is why we use max function
+        int right = max(0, maxipath(node->right, maxi));// we travel to the right to find the value, we avoid if it is negative, that is why we use max function
         
-        maxi = max(maxi, node->val+left+right);
+        maxi = max(maxi, node->val+left+right);//
         
-        return node->val + max(left, right);
+        return node->val + max(left, right);//we take only max(left, right) becoz we see going which side we get the max sum, we go to the direction which gives us the maximum sum
         
     }
 };
 
 
 9.) Right view of the binary tree
+
+
+whenever the size of the data structure is equal to the level, then first time we are in that level, so push that node into the data structure 
 
 class Solution {
 public:
