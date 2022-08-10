@@ -83,37 +83,7 @@ K = 13
 Output: 11(largest value that is closest and less than 13)
   
 
-  int floorInBST(TreeNode<int> * root, int X)
-{
-    // Write your code here.
-    //Your code here
-        if (root == NULL) return -1;
-    
-    int floor = -1;
-    
-     while(root)//we keep on traversing until the node value becomes NULL
-     {
-         if(root->val == X)//if the given is already present in the BST, then make it the ceil and return it
-         {
-             floor = root->val;
-             return floor;
-         }
-         else if(root->val > X)//if the key is less than the root->data, then we move lefr
-            {
-                // floor = root->data;//make ceil as the root->data 
-                root = root->left;//and then move left
-            }
-            
-        else if(X > root->val)//if the key is more than the root->data, then we move right
-        {
-            floor = root->val;
-            root = root->right;//we move right
-        }
-     }
-    
-     return floor;
-    
-}int floorInBST(TreeNode<int> * root, int X)
+int floorInBST(TreeNode<int> * root, int X)
 {
     // Write your code here.
     //Your code here
