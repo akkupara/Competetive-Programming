@@ -164,4 +164,133 @@ public:
 5.) Delete a node in a BST
 
 
+--> needs a lot of revision
+
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(root == NULL)//if the tree is empty, then return NULL
+            return NULL;
+        if(root->val == key)//if it is the root that has to be deleted,
+            return helper(root);
+        
+        TreeNode* dummy = root;//we are creating a copy of the root, so that it will not be destroyed
+        while(root != NULL)//we have to traverse until the node is not NULL
+        {
+            //this if condition is for the left sub-tree
+            if(root->val > key)//if root->val > key, then we move leftwards in the tree//this is for the left sub-tree
+            {
+                if(root->left != NULL && root->left->val == key)
+                {
+                    root->left = helper(root->left);// if root->left->val == key, we then make the connection change using the helper function
+                    break; //and then break, because our job is done
+                }
+                else
+                    root = root->left;//else we move leftwards in the tree
+                    
+            }
+            else//this is for the right subtree
+            {
+                if(root->right != NULL && root->right->val == key)
+                {
+                    root->right = helper(root->right);// if root->right->val == key, we then make the connection change using the helper function
+                    break; //and then break, because our job is done
+                }
+                else
+                    root = root->right;//else we move rightwards in the tree
+            }
+        }
+        return dummy;
+    }
+        
+        
+        TreeNode* helper(TreeNode* root)
+        {
+            if(root->left == NULL)//if root->left is NULL, then we connect the root->left to the new root->right
+                return root->right;
+            else if(root->right == NULL)
+            {
+                return root->left;
+            }
+            
+            TreeNode* rightChild = root->right;//we keep the right child at one point
+            TreeNode* lastRight = findLastRight(root->left);// we keep on traverse to the right and mark at it that point
+            lastRight->right = rightChild;//we make the lastright->right = rightchild and the connection is made
+            return root->left;
+        }
+        
+        TreeNode* findLastRight(TreeNode* root)
+        {
+            if(root->right == NULL)
+                return root;
+            return findLastRight(root->right);
+        }
+};
+    
+
+
+6.) Kth smallest element in the BST
+
+
+
+Input:
+
+      2
+    /   \
+   1     3
+
+K = 2
+Output: 2
+    
+    
+--> we can do a DFS traversal, by storing all the nodes into a vector and then sorting it to find the kth smallest element, but that would have the 
+--> TC = O(N)- for tree traversal + O(N logN)- for sorting the vector
+--> An interesting property is that "Inorder traversal of any given BST is always in sorted order", so in this approach we can avoid the Nlogn -sorting extra TC but still we are using extra space of O(N
+--> can we do it better, yes whenever we visit a node in preorder manner, we kkep a counter and increase it whenever we visit a node, whenever the value of counter is equal to K, we return the node's value at which we are currently standing
+
+
+__> if we do recusrive traversal, then TC = O(N) and SC = O(N)
+__> if we do iterative traversal, then TC = O(N) and SC = O(N)
+__> if we do Morris Traversal, then TC = O(N) and SC = O(1)
+__> same is for the kth largest element, where we check for the counter == size-k, and then return that node->val
+
+
+--> This is the recursive solution
+class Solution {//this is the recursive solution
+public:
+    int count = 0, ans;
+    void inOrder(TreeNode* root, int k)
+    {
+        if(root == NULL)
+            return;//it exits the function immediately
+        inOrder(root->left, k);// first we traverse to the left and then right since it is the inorder traversal
+        
+        if(++count == k)// if the count is equal to the given k 
+        {
+            ans = root->val;//make the sum as the root->val 
+            return;//then it exits the function immediately
+        }
+        
+        inOrder(root->right, k); // we traverse to the right
+    }
+    int kthSmallest(TreeNode* root, int k) {
+        
+        inOrder(root, k);
+        return ans;
+        
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
