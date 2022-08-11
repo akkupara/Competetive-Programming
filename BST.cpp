@@ -114,3 +114,54 @@ int floorInBST(TreeNode<int> * root, int X)
      return floor;
     
 }
+
+
+
+4.) Insert a Node in a BST
+
+
+
+--> TC = O(log n)
+class Solution {
+public:
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if(root == NULL)//if the tree is NULL, then insert that node into the tree
+        {
+            return new TreeNode(val);//this is the syntax for inserting the node into the tree
+        }
+        TreeNode* cur = root; //we create a copy of the root, becoz at the end we have to return the root itself
+        
+        while(true)
+        {
+            if(cur->val <= val)//if the cur->val is less than val, then we move right
+            {//now there are two options, 
+                if(cur->right != NULL)//one is, if cur->right is not NULL, then we move more rightwards
+                    cur = cur->right;
+                else
+                {
+                    cur->right = new TreeNode(val);//if it is not NULL, then insert that node into the tree
+                    break;
+                }
+            }
+            else//if cur->val is greater than val, then we move left
+            {
+                if(cur->left != NULL)//one is, if cur->left is not NULL, then we move more leftwards
+                    cur = cur->left;
+                else{
+                    cur->left = new TreeNode(val);//if it is not NULL, then insert that node into the tree
+                    break;
+                    
+                }
+            }
+        }
+        return root;
+    }
+};
+
+
+
+
+5.) Delete a node in a BST
+
+
+
