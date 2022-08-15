@@ -285,6 +285,37 @@ public:
 
 
 
+7.) LCA in BST
+
+              5
+           /    \
+         4       6
+        /         \
+       3           7
+                    \
+                     8
+n1 = 7, n2 = 8
+Output: 7
+
+    
+class Solution {
+public://iterative solution
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        while(root)
+        {
+            if(root->val > p->val && root->val > q->val)//if the two given nodes are less than the node at which we are standing currently then we move to the left
+                root = root->left;
+            else if(root->val < p->val && root->val < q->val)//if the two given nodes are greater than the node at which we are standing currently then we move to the right
+                root = root->right;
+            else return root;//if not then we return the root
+        }
+        
+        return NULL;
+    }
+};
+
+
+
 
 
 
