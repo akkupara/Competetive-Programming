@@ -303,7 +303,7 @@ public://iterative solution
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         while(root)
         {
-            if(root->val > p->val && root->val > q->val)//if the two given nodes are less than the node at which we are standing currently then we move to the left
+            if(root->val > p->val && root->val > q->val)g//if the two given nodes are less than the node at which we are standing currently then we move to the left
                 root = root->left;
             else if(root->val < p->val && root->val < q->val)//if the two given nodes are greater than the node at which we are standing currently then we move to the right
                 root = root->right;
@@ -316,6 +316,86 @@ public://iterative solution
 
 
 
+8.) Inorder Successor in a BST
+
+
+--> It is the next node in sorted order
+--> Inorder successor of a node is the next node in Inorder traversal of the Binary Tree
+
+
+Input:
+             20
+            /   \
+           8     22
+          / \
+         4   12
+            /  \
+           10   14
+                 
+K(data of x) = 8
+Output: 10
+Explanation:
+Inorder traversal: 4 8 10 12 14 20 22
+Hence, successor of 8 is 10.
+    
+    
+    
+    
+class Solution{
+  public:
+    // returns the inorder successor of the Node x in BST (rooted at 'root')
+    Node * inOrderSuccessor(Node *root, Node *x)
+    {
+        Node* succ = NULL;//initially making the successor node as NULL
+        
+        while(root != NULL)//we traverse until the root is NULL
+        {
+            if(x->data >= root->data)//if the value to searchded is greater than the root->node
+                root = root->right;//then we move right
+            else 
+            {
+                succ = root;///or else we move left and store the root in succ
+                root = root->left;
+            }
+        }
+        return succ;
+    }
+};
+
+
+9.) Two Sum in BST
+
+--> it can be solved by converting the bst into an array and then solve it like the two sum problem and TC = O(N)+O(N)
+--> But this can be optimised, using BST iterator which i didnt solve still
+
+
+
+THIS IS THE RECURSIVE SOLN>>>>>
+class Solution {
+public:
+    unordered_set<int> s;
+    bool findTarget(TreeNode* root, int k) {
+        
+        if(root == NULL)//if root is NULL, then return false
+            return false;
+        
+        if(s.count(k - root->val) != 0)// it does a pre order traversal and iterative chacks whether k-root->val is already present in the set, if it is present it return true, else traverse the whole tree and check further
+            return true;
+        s.insert(root->val);
+        return findTarget(root->left, k) || findTarget(root->right, k);
+        
+    }
+    
+};
+
+
+10.) Recover BST
+
+--> Brute force is to do the inorder traversal and then sort and store it an DS but now traverse the actual tree and compare the sorted DS 
+and the actual traversal and swap the two nodes 
+
+--> TC = O(N) + O(N lOG N)
+--> But this can be done better
 
 
 
