@@ -68,3 +68,24 @@ public:
         return result;
     }
 };
+
+
+3.) Largest odd in a string(return a substring)
+    
+    
+--> interesting qs
+
+
+class Solution {
+public:
+    string largestOddNumber(string num) {
+        for(int i = num.length() - 1; i >= 0; i--)//we start from the last digit of the string,
+		if(int(num[i]) % 2 != 0)//if it is even, move left, 
+            //if it is odd, then return the substring starting from 0 to i+1
+            //i.e if we encounter an odd integer, then we return the substring from 0 till that index
+			return num.substr(0, i+1);
+
+	    return "";//else return null string
+        
+    }
+};
