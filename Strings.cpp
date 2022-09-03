@@ -89,3 +89,100 @@ public:
         
     }
 };
+
+
+
+4.) Longest Common Prefix
+
+--> I solved it using O(N^2), but can be optimised
+
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        string ans = "";
+        for(int i=0; i < strs[0].size(); i++)//for traversing all characters in first string
+        {
+            char ch = strs[0][i];
+            
+            bool match = true;
+            
+            for(int j=1; j < strs.size(); j++)
+            {
+                if(strs[j].size() < i || ch != strs[j][i])// if match not found or size of j is greater then i, then break
+                {
+                    match = false;//if match is not found, then break from the inner loop
+                    break;
+                }
+            }
+            if(match == false)
+                break;
+            else
+                ans.push_back(ch);
+        }
+        return ans;
+    }
+};
+
+
+
+--> But also solved using better approach of sorting which is bit efficient than the former
+--> first sort it so that all the similar words are next to each so we dont need to check them, it is enough if we check the string in extreme corners
+
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        int n =strs.size();
+		string ans; 
+        
+		sort(strs.begin(), strs.end());//sort it so that all the similar words are next to each so we dont need to check them, it is enough if we check the string in extreme corners
+        
+		string a = strs[0];//leftmost string after sorting
+		string b = strs[n-1];//rightmost string after sorting
+        
+		for(int i =0; i< a.size(); i++){
+			if(a[i] == b[i]){
+				ans.push_back(a[i]);
+			}
+            else 
+                break;
+		}
+        
+		return ans;
+    }
+};
+
+
+
+5.) Isomorphic Strings
+
+--> Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+	
+	
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        int m = s.size();
+        int n = t.size();
+        
+        if(m != n)
+            return false; //if size of two strings are not equal then return false
+        
+        int m1[256] = {0};//create two character arrays
+        int m2[256] = {0};
+        
+        for(int i=0; i < n; i++)
+        {
+            if(m1[s[i]] == 0 and m2[t[i]] == 0)//if it is not already mapped and u r visiting that for the first time i.e it is unvisited
+            {
+                m1[s[i]] = t[i];//then create the map from x->y
+                m2[t[i]] = s[i];//and then create the map from y->x
+            }
+            else if(m1[s[i]] != t[i])//if already hashed value is mapped to some other variable then return false i.e if the map is not x->y then return false
+                return false;
+        }
+        return true;//else return true
+        
+    }
+};
