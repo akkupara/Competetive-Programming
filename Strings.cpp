@@ -186,3 +186,109 @@ public:
         
     }
 };
+
+
+
+6.) Rotate string
+
+-->Given two strings s and goal, return true if and only if s can become goal after some number of shifts on s.
+--> A shift on s consists of moving the leftmost character of s to the rightmost position.
+
+Example 1:
+
+Input: s = "abcde", goal = "cdeab"
+Output: true
+	
+	
+Example 2:
+
+Input: s = "abcde", goal = "abced"
+Output: false
+	
+	
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+        int n = s.size();
+        int m = goal.size();
+        
+        if(n != m)
+            return false;
+        
+        string temp = s + s;// add the s to s itself and check if goal is present in it or not
+        if(temp.find(goal) != string::npos)//npos is returned if match is not found
+            return true;// if npos is not returned then it means a match is found and return true
+        return false;
+        
+    }
+};
+
+
+
+
+7.) Valid Anagrams
+
+--> Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+	
+--> An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+ 
+
+Example 1:
+
+Input: s = "anagram", t = "nagaram"
+Output: true
+Example 2:
+
+Input: s = "rat", t = "car"
+Output: false
+
+-->first approach is sort and check the equality of two string, if they are equal then return true else false
+--> other approach is maintain a comman hash table, for every string1 visit increase the count by 1 and for every string2 visit decrease by 1 at the end if the count is 0, then return true else false
+ 
+
+	
+first approach using sort:
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        
+        sort(s.begin(), s.end());
+        sort(t.begin(), t.end());
+        
+        if(s == t) //if they are equal then return true
+            return true;
+        return false;//if they are not equal, then return false
+    }
+};
+
+
+
+Second Approach:(better solution)
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.size() != t.size())
+            return false;
+        
+        int n = s.size();
+        int count[26] = {0};
+        
+        for(int i=0; i < n; i++)
+        {
+            count[s[i] - 'a']++;//if the character in string s is encountered, increase the count by 1
+            count[t[i] - 'a']--;//if the character in string s is encountered, decrease the count by 1
+        }
+        
+        for(int i=0; i < 26; i++)
+            if(count[i] != 0)// if anagram count shud be 0, if count is not zero return false
+                return false;
+        return true;//else return true
+
+    }
+};
+
+
+
