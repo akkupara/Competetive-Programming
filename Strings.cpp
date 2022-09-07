@@ -292,3 +292,143 @@ public:
 
 
 
+8.) SORT CHARACTERS BY FREQUENCY
+
+
+--> https://www.youtube.com/watch?v=vltY5jxqcco   important resource
+
+
+Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+
+Return the sorted string. If there are multiple answers, return any of them.
+
+ 
+
+Example 1:
+
+Input: s = "tree"
+Output: "eert"
+Explanation: 'e' appears twice while 'r' and 't' both appear once.
+So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+Example 2:
+
+Input: s = "cccaaa"
+Output: "aaaccc"
+Explanation: Both 'c' and 'a' appear three times, so both "cccaaa" and "aaaccc" are valid answers.
+Note that "cacaca" is incorrect, as the same characters must be together.
+	
+--> first we push the element of the string into the pair of vector
+--> and then sort it based on count
+--> and then insert that sorted vector elements into a string which we are going to return as the final answer
+
+
+
+class Solution {
+public:
+    string frequencySort(string s) {
+        string ans = "";
+        vector<pair<int, char>> vec{'z'+1, {0, 0}};//we create an array of (122+1) size and fill it full with null value and 123 because 123 characters are required to store all uppercase and lowercase alphabets
+        for(char c: s)
+            vec[c] = {vec[c].first+1, c};// we adding the incremented count of occurence and the character i.e each time we see a character we move to the index of that character and increment the count by 1
+        
+        sort(vec.begin(), vec.end());// and then we sort the vec according to the count
+        
+        for(auto p: vec)
+        {
+            ans = string(p.first, p.second) + ans;//for eg string(2, a) gives us the output 'aa' i.e we are pushing back the values into another stirgn which we are going to return as the answer
+        }
+        
+        return ans;
+    }
+};
+
+
+
+9.) Maximum nesting depth of the parantheses
+
+--> https://www.youtube.com/watch?v=kUp-gqHzk6c  --important resouuse link
+--> the basic idea is to keep track of the parantheses and return the highest parantheses count
+
+
+Example 1:
+
+Input: s = "(1+(2*3)+((8)/4))+1"
+Output: 3
+Explanation: Digit 8 is inside of 3 nested parentheses in the string.
+	
+	
+Example 2:
+
+Input: s = "(1)+((2))+(((3)))"
+Output: 3
+
+	
+	
+	
+class Solution {
+public:
+    int maxDepth(string s) {// the basic idea is to keep track of the parantheses and return the highest parantheses count
+        int count = 0;
+        int maxi = 0;
+        for(int i=0; i < s.size(); i++)
+        {
+            if(s[i] == '(')// if we encounter a open parantheses (
+            { 
+                count++;//then we increase the count
+                maxi = max(count, maxi);//and keep a maxi variable to keep track of the highest parantheses count
+            }
+            else if(s[i] == ')')//if we encounter a open parantheses )
+            {
+                count--;//then we decrease the count
+                maxi = max(count, maxi);//and keep a maxi variable to keep track of the highest parantheses count
+            }
+            else
+                continue;// if the character is not either the two brackets, then move to the next indec
+        }
+        return maxi;//return the mamimum count
+        
+    }
+};
+
+
+
+
+10.) Roman to Integer
+
+--> https://www.youtube.com/watch?v=bCA1otebP58&t=178s    important result
+-->
+
+
+
+class Solution {
+public:
+    int romanToInt(string str) {
+        map<char, int> roman;
+        roman.insert(make_pair('I', 1));
+        roman.insert(make_pair('V', 5));
+        roman.insert(make_pair('X', 10));
+        roman.insert(make_pair('L', 50));
+        roman.insert(make_pair('C', 100));
+        roman.insert(make_pair('D', 500));
+        roman.insert(make_pair('M', 1000));//make entries into the map where it contains the values and the roman letter
+        
+        int num, sum = 0;
+        
+        for(int i=0; i < str.size();)//iterate the string str
+        {
+            if(i==(str.size()-1) || roman[str[i]] >= roman[str[i+1]])//if it reaches the last character or current is greater than the next, then dont do anything
+            { 
+                num = roman[str[i]];//juz make it current value from the map
+                i++;//move one position right
+            }
+            else //if(roman[str[i]] < roman[str[i+1]])
+            {
+                num = roman[str[i+1]] - roman[str[i]];// for eg IV then 5 - 1, if the next is greater than the current, then calculate the value of next-current from the map
+                i = i + 2;//move two positions to the right
+            }
+            sum = sum + num;//add it to the sum
+        }
+       return sum; //finally return sum
+    }
+    
+};
