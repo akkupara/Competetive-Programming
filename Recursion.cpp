@@ -44,6 +44,29 @@ public:
 
 2.) Count good numbers
 
+--> A string is good, if it has even numbers in even indexes and prime numbers in odd indexes where everything is 0 indexed
+--> For example, "2582" is good because the digits (2 and 8) at even positions are even and the digits (5 and 2) at odd positions are prime. 
+--> constraints are: Given an integer n, return the total number of good digit strings of length n. Since the answer may be large, return it modulo 10^9 + 7.
+
+Example 1:
+
+Input: n = 1
+Output: 5
+Explanation: The good numbers of length 1 are "0", "2", "4", "6", "8".
+  
+Example 2:
+
+Input: n = 4
+Output: 400
+  
+  
+Example 3:
+
+Input: n = 50
+Output: 564908303
+  
+  
+  
 --> need to revise again
 --> Important link: https://www.youtube.com/watch?v=CctVpEGgNf0
 --> takes logarithmic time complexity
@@ -78,6 +101,19 @@ public:         //even nos: 0, 2, 4, 6, 8 and prime nos: 2, 3, 5, 7
 
 
 3.) Sort a stack using recursion
+
+
+Example 1:
+
+Input:
+Stack: 3 2 1
+Output: 3 2 1
+  
+Example 2:
+
+Input:
+Stack: 11 2 32 3 41
+Output: 41 32 11 3 2
 
 --> Important qs and need to revise again
 --> Brute force approach is that first, store the elements of the stack into a container and then sort that container and then again insert elements 
@@ -120,6 +156,21 @@ void SortedStack :: sort()//the basic idea is to remove all the elements from th
 
 
 4.) Reverse a Stack
+
+
+Example 1:
+
+Input:
+St = {3,2,1,7,6}
+Output:
+{6,7,1,2,3}
+
+Example 2:
+
+Input:
+St = {4,3,9,6}
+Output:
+{6,9,3,4}
 
 --> step 1: Put the stack's top element aside
     step 2: Use recursion to reverse the remaining stacks
@@ -180,4 +231,58 @@ public:
 
  
 
+5.) Generate parantheses
+
+
+
+Example 1:
+
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+
+Example 2:
+
+Input: n = 1
+Output: ["()"]
+
+
+--> Important qs
+--> Important link: https://www.youtube.com/watch?v=WW1rYrR3tTI
+--> Conditions are : open < n && close < open and if string.size() == n * 2 that is if the no of brackets become equal, then push that string into the vector
+
+
+
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;//which is going to return the ans
+        fnc(ans, n, 0, 0, "");//recursive function
+        // we pass (ans, no. of pairs, initial open brackets, initial closing brackets, empty string)
+        return ans;
+        
+    }
     
+    void fnc(vector<string> &ans, int n, int open, int close, string s)
+    {
+        //base case
+        if(s.size() == n * 2)
+        {
+            ans.push_back(s);//if the string size becomes n*2, then just add that string to the vector
+            return;
+        }
+        
+        //first condition
+        if(open < n)//then insert opening bracket
+            fnc(ans, n, open+1, close, s + "(");//open will be incremented by 1 and we will add ( to the string
+        
+        if(close < open)
+            fnc(ans, n, open, close+1, s + ")");//close will be incremented by 1 and we will add ) to the string
+        
+        
+    }
+};
+
+
+
+
+6.) 
