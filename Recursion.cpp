@@ -414,6 +414,27 @@ public:
 
 
 
+Example 1:
+
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+
+Example 2:
+
+Input: candidates = [2,5,2,1,2], target = 5
+Output: 
+[
+[1,2,2],
+[5]
+]
+
+
 class Solution {
 public:
     void findCombination(int ind, int target, vector<int>& arr, vector<vector<int>> &ans, vector<int> &ds)
@@ -453,3 +474,80 @@ public:
 
 
 
+
+9.) Subset sum
+
+--> Brute force approach is to find all the subsets using power set and then finding all the sum and then sorting the sum to get the answer
+--> This takes O(N * 2^N)
+--> But we are expected to solve this in O(2^N)
+--> Very easy and interesting qs when solved using recursion
+
+
+class Solution
+{
+public:
+    
+    void func(int index, int sum, vector<int> &arr, int N, vector<int> &ans)
+    {
+        if(index == N)
+        {
+            ans.push_back(sum);//whenever we reach the end of the tree, we get the sum and then return
+            return;//if we reach the end of the recursion tree, then we break
+        }
+        //in recursion tree, either we pick or not pick
+        
+        //when we pick
+        func(index+1, sum + arr[index], arr, N, ans);//we move the index by 1 and add it to the sum
+        
+        //when we do not pick
+        func(index+1, sum, arr, N, ans);// we jux move to the next index and the sum remains the same
+        
+    }
+    
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        vector<int> ans;//to store the subset sum which is the answer
+        func(0, 0, arr, N, ans);// (index, sum, arr, size, ans)
+        sort(ans.begin(), ans.end());
+        
+        return ans;
+    }
+};
+
+
+
+
+10.) Subset Sum-II
+
+--> Need to revise again
+
+
+class Solution {
+public:
+    
+    void findSubsets(int index, vector<int>& nums, vector<int> &ds, vector<vector<int>> &ans)
+    {
+        ans.push_back(ds);// first whenever we visit number, we insert it into the subset
+        
+        for(int i = index; i < nums.size(); i++)//the for loop goes from index to n-1
+        {
+            if(i == index || nums[i] != nums[i-1])
+            {
+                ds.push_back(nums[i]);//if we have not picked the number and also it is not duplicate, then we insert nums[i] into ds
+                findSubsets(i+1, nums, ds, ans);//we move to the next index
+                ds.pop_back();
+            }
+                
+        }
+    }
+    
+    
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> ans;//will store all the subsets generated
+        vector<int> ds;// used in recursion to store the subsets
+        
+        sort(nums.begin(), nums.end());// we sort it because we want the duplicates together, only then we can avoid duplicates in the subsets
+        findSubsets(0, nums, ds, ans);//intiallt we start with the 0th index
+        return ans;
+    }
+};
