@@ -285,4 +285,92 @@ public:
 
 
 
-6.) 
+6.) Print all subsequences/ Powerset / SUbset 
+
+--> important question
+--> https://www.youtube.com/watch?v=h4zNvA4lbtc  : alisha
+--> https://www.youtube.com/watch?v=b7AYbpM5YrE  : striver
+--> Given an integer array nums of unique elements, return all possible subsets (the power set).
+--> The solution set must not contain duplicate subsets. Return the solution in any order.
+  
+ Example 1:
+
+Input: nums = [1,2,3]
+Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+
+Example 2:
+
+Input: nums = [0]
+Output: [[],[0]]
+
+--> if (n & (1 << i)) != 0, then we say that ith bit is set
+--> This is the pre-requisite
+--> TC = O(N * 2^N)
+--> if (n & (1 << i)) != 0, then we say that ith bit is set
+--> 1 << n is equal to 2^n
+
+
+________________> Need to revise again
+
+
+class Solution {
+public:
+    
+    vector<vector<int>> subsets(vector<int>& nums) {
+        
+        int n = nums.size();
+        vector<vector<int>> res;
+        for(int i=0; i < pow(2, n); i++)//pow(2, n) == (1 << n) i.e 10000
+        {
+            vector<int> str;
+            for(int j=0; j < n; j++)
+            {
+                if((1 << j)&i)// for eg i=5 --> 101 -> [1, 3], now we check if 0th bit is set
+                    str.push_back(nums[j]);
+            }
+            
+                res.push_back(str);   
+        }
+        return res;
+    }
+};
+
+
+7.) Count all subsequences with sum K / Perfect sum problem
+
+--> Important Questions and need intense revision
+--> https://www.youtube.com/watch?v=OyZFFqQtu98&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=51
+--> TC = O(2^t * N)
+
+class Solution {
+public:
+    void findCombination(int index, int target, vector<int> &arr, vector<vector<int>> &ans, vector<int> &ds)
+    {
+        if(index == arr.size())//if index reaches till the last of the recursion tree
+        {
+            if(target == 0)//and if the target is zero
+                ans.push_back(ds);//then the ds will contain the proper combination sum,then we put that ds into the ans vector 
+            return;//if target is not zero then perform the other operations and exit the loop
+        }
+        
+        if(arr[index] <= target)//
+        {
+            ds.push_back(arr[index]);//if the condition holds, then we insert that into the ds vector
+            findCombination(index, target-arr[index], arr, ans, ds);//with that inserted element, we now check if there exists any combination ans and we can again pick that same element also, so the index remains the same
+            ds.pop_back();//once the recursion call backtracks, this element should be popped 
+            
+            
+        }
+        
+        findCombination(index+1, target, arr, ans, ds);//if no proper match is found,then move to the next index
+    }
+    
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;//this is gonna store all the combinations which is the final answer
+        vector<int> ds;//which will be used in the recursion to store the stuffs
+        findCombination(0, target, candidates, ans, ds);//(index, target, array, ans, ds)
+        return ans;
+        
+    }
+};
