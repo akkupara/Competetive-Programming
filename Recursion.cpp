@@ -336,7 +336,35 @@ public:
 };
 
 
-7.) Count all subsequences with sum K / Perfect sum problem
+7.) Combination sum 1
+  
+  
+  Example 1:
+
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+Explanation:
+2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+7 is a candidate, and 7 = 7.
+These are the only two combinations.
+  
+  
+Example 2:
+
+Input: candidates = [2,3,5], target = 8
+Output: [[2,2,2,2],[2,3,3],[3,5]]
+
+
+Example 3:
+
+Input: candidates = [2], target = 1
+Output: []
+
+
+
+  
+ --> Also known as :Count all subsequences with sum K / Perfect sum problem
+
 
 --> Important Questions and need intense revision
 --> https://www.youtube.com/watch?v=OyZFFqQtu98&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=51
@@ -374,3 +402,54 @@ public:
         
     }
 };
+
+
+
+
+8.) Combination Sum II
+
+--> same as the above problem but, we avoid duplicates and the returned combination should be in sorted order
+--> Need to revise again
+--> https://www.youtube.com/watch?v=G1fRTGRxXU8&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=51
+
+
+
+class Solution {
+public:
+    void findCombination(int ind, int target, vector<int>& arr, vector<vector<int>> &ans, vector<int> &ds)
+    {
+        if(target == 0)
+        {//if target becomes 0, then we add that ds which has the combination into the ans vector
+            ans.push_back(ds);
+            return;
+        }
+        for(int i = ind; i < arr.size(); i++)//travelling from the index to n-1
+        {
+            if(i > ind && arr[i] == arr[i-1])//this will avoid us picking the same elements(duplicate combinations) 
+                continue;//then continue
+            if(arr[i] > target)//if the element we are trying to pick exceeds target, then we break
+                break;
+            else
+            {
+                ds.push_back(arr[i]);//if the element we are trying to pick is less than  target, then we do the recursion by moving to the next index
+                findCombination(i+1, target - arr[i], arr, ans, ds);
+                ds.pop_back();//we pop it 
+            }
+        }
+        
+    }
+
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());//first we sort the array, becuz we need the sorted combination
+        
+        vector<vector<int>> ans;//which will store the answer and which is going to be returned
+        vector<int> ds;//used in recursion to generate all the combination
+        findCombination(0, target, candidates, ans, ds);//(index, target, candidate, ans, ds)
+        
+        return ans;
+    }
+};
+
+
+
