@@ -642,3 +642,131 @@ public:
         return ptr->next;//because that's where head of the LL starts  
     }
 };
+
+
+
+14.) Given a linked list of 0s, 1s and 2s, sort it.
+  
+--> one approach is finding the counts of 0, 1, 2 and then running a loop till the individual count becomes 0, then putting the values in order
+--> This does not change the links but changes only the value of each node
+
+
+class Solution
+{
+    public:
+    //Function to sort a linked list of 0s, 1s and 2s.
+    Node* segregate(Node *head) {
+        int zeroc = 0;
+        int onec = 0;
+        int twoc = 0;
+        
+        Node* temp = head;
+        while(temp != NULL)
+        {
+            if(temp->data == 0)
+                zeroc++;
+            else if(temp->data == 1)
+                onec++;
+            else if(temp->data == 2)
+                twoc++;
+                
+            temp = temp->next;//moving temp to next position
+        }
+        
+        temp = head;//make temp point to head
+        
+        while(temp != NULL)
+        {
+            if(zeroc != 0)
+            {
+                temp->data = 0;
+                zeroc--;
+            }
+            else if(onec != 0)
+            {
+                temp->data = 1;
+                onec--;
+            }
+            else if(twoc != 0)
+            {
+                temp->data = 2;
+                twoc--;
+            }
+            temp = temp->next;////moving temp to next position
+        }
+        return head;
+    }
+};
+
+
+optimised approach by changing the links:
+
+--> Maintain 6 pointers and keep eaxch value in separate list and finally merge them
+
+class Solution
+{
+    public:
+    
+    void insertAtTail(Node* &tail, Node* curr)
+    {
+        tail->next = curr;//creates a link b/w tail and curr
+        tail = curr;//make tail point to curr
+    }
+    //Function to sort a linked list of 0s, 1s and 2s.
+    Node* segregate(Node *head) {
+        
+        Node* zeroHead = new Node(-1);//creating new node with dummy value -1
+        Node* zeroTail = zeroHead;//will point to xeroHead
+        
+        Node* oneHead = new Node(-1);//creating new node with dummy value -1
+        Node* oneTail = oneHead;//will point to oneHead
+        
+        Node* twoHead = new Node(-1);//creating new node with dummy value -1
+        Node* twoTail = twoHead;
+        
+        Node* curr = head;//create a temporary node and point to head;
+        
+        //create separate LL for 0, 1, 2 respectively
+        while(curr != NULL)
+        {
+            int value = curr->data;
+            
+            if(value == 0)
+            {
+                insertAtTail(zeroTail, curr);//anyway we are going to insert the node from backside and node to be inserted is curr
+            }
+            else if(value == 1)
+            {
+                insertAtTail(oneTail, curr);
+            }
+            else if(value == 2)
+            {
+                insertAtTail(twoTail, curr);
+            }
+            curr = curr->next;
+        }
+        
+        //merge 3 sublist
+        if(oneHead->next != NULL)//checking if first list(1's list) is empty or not
+        {
+            zeroTail->next = oneHead->next;//becuase it should not be connected with dummy node, bu
+        }
+        else
+            zeroTail->next = twoHead->next;//if the first list is empty then connect it directly with the second list
+            
+        oneTail->next = twoHead->next;//connect(1's list) to (2's list)
+        twoTail->next = NULL;
+        
+        
+        head = zeroHead->next;//make head point to zeroHead->next
+        
+        //delete dummy nodes
+        delete(zeroHead);
+        delete(oneHead);
+        delete(twoHead);
+        
+        return head;
+    }
+};
+
+
