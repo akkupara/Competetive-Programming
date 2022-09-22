@@ -525,3 +525,120 @@ public:
         return dummy->next;//return dummy->head, because that is where head of the ll is....
     }
 };
+
+
+
+12.) Delete the middle node of the Linked List
+
+--> We maintain three pointers fast, slow, prev, keeping the prev node to get the previous node of slow pointer when we reach middle
+--> we move the slow by 1 and fast by 1 and when slow != head, we move prev by 1, since we want prev to start one step later than slow node
+--> and changing the links to prev and deleting slow and returning the head will give us the answer.
+  
+  
+  
+class Solution {
+public:
+    ListNode* deleteMiddle(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* prev = head;//keeping this prev node to get the previous node of slow pointer when we reach middle
+        
+        if(head == NULL)//if the Linked list is empty
+            return NULL;//return NULL
+        
+        if(head->next == NULL)//if the linked list has only one node
+        {
+            delete(head);//then delete that node and return NULL
+            return NULL;
+        }
+        
+        while(fast != NULL && fast->next != NULL)
+        {
+            if(slow != head)//since we want prev to start one step later than slow node
+                prev = prev->next;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        prev->next = slow->next;
+        delete(slow);
+        
+        return head;
+    }
+};
+
+
+
+13.) Sort a Linked List
+
+1. Using 2pointer / fast-slow pointer find the middle node of the list.
+2. Now call mergeSort for 2 halves.
+3. Merge the Sort List (divide and conqueror Approach)
+  
+--> https://leetcode.com/problems/sort-list/discuss/1795126/C%2B%2B-oror-Merge-Sort-oror-2-Pointer-oror-Easy-To-Understand
+--> https://www.youtube.com/watch?v=rM5EEA_rbNY
+
+
+//MergeSort Function O(n*logn)
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL)//If List Contain a Single or 0 Node
+            return head;
+        
+        ListNode *temp = NULL;//create a dummy node
+        ListNode *slow = head;
+        ListNode *fast = head;
+        
+        //2 pointer turtle approach
+        while(fast != NULL && fast->next != NULL)//here we are finding the middle node after which we are dividing into two halves and then sorting them separately
+        {
+            temp = slow;//now temp points to slow and each iteration temp becomes where slow points to 
+            slow = slow->next;//in last iteration slow would be poiting to the head of the right half
+            fast = fast->next->next;
+        }
+        
+        //now temp will pointing to the last element of the left half, i.e the mid
+        temp->next = NULL;//end of first
+        
+        ListNode *left = sortList(head);    //left half recursive call
+        ListNode *right = sortList(slow);    //right half recursive call
+        
+        return mergeList(left, right);
+        
+    }
+    ListNode* mergeList(ListNode *left, ListNode *right)
+    {
+        ListNode *ptr = new ListNode(0);//creating a dummy node with value 0;
+        ListNode *curr = ptr;//another node which points to ptr
+        
+        while(left != NULL && right != NULL)//till both of them reaches NULL
+        {
+            if(left->val <= right->val)
+            {
+                curr->next = left;//curr should be linked to left
+                left = left->next;//move iteratively
+            }
+            else
+            {
+                curr->next = right;
+                right = right->next;
+            }
+            curr = curr->next;//moving curr to next position
+        }
+        
+        //for unequal left and right halves
+        if(left != NULL)//if right halves is over 
+        {
+            curr->next = left;//curr should be linked to left
+            left = left->next;//move iteratively
+        }
+        
+        if(right != NULL)//if left half is over
+        {
+            curr->next = right;
+            right = right->next;
+        }
+        return ptr->next;//because that's where head of the LL starts  
+    }
+};
