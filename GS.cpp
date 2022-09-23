@@ -34,3 +34,41 @@ class Solution
 --> If we encounter a character in string 1, increase the count by 1 and if we encounter a character in string 2 decrease the count TC = O(N) and SC = O(N)
   
   
+    
+class Solution{
+    public:
+
+    //Function to check if two arrays are equal or not.
+    bool check(vector<ll> A, vector<ll> B, int N) {
+        if(A.size() != B.size())
+            return false;
+        
+        unordered_map<char, int> mpp;//maintain a unordermap to count the occurence
+        
+        for(int i=0; i < N; i++)
+        {
+            mpp[A[i]]++;//if a character is encounter from the vector A increase the count by 1
+        }
+        int flag=0;
+        
+        for(int i=0; i < N; i++)
+        {
+            mpp[B[i]]--;//if a character is encounter from the vector B decrease the count by 1
+        }
+        
+        for(auto it: mpp)
+        {
+            //if the count is not zero, means that two array are not equal, and there are some mismatch in two arrays
+            if(it.second != 0)//if count is not 0, at any point
+            {
+                flag = 1;//make flag as 1 and then break out of the loop, 
+                break;
+            }
+        }
+        
+        if(flag == 1)
+            return false;
+        return true;
+    
+    }
+};
