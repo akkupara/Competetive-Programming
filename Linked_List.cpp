@@ -771,43 +771,40 @@ class Solution
 
 
 
-15.) Add two Numbers from two Linked List
+15.) Intersection of two Linked List - https://www.youtube.com/watch?v=u4FWXfgS8jw&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=34
 
---> only one approach which is the optimised approach
-
-class Solution {
+--> Brute force approach is keeping a node in LL1 as reference and checking if there is any node with the same address in LL2, but this takes TC = O(N*M)
+--> can be optimised by using hash table where the complete node's address is being is hashed, this takes TC = O(M + N) and SC = O(N)
+--> Can further be optimised, there are two similar approaches, once with lengthier code and other has a shorter code.
+--> the idea of the shorter code, is make two dummy node point to two LL simultaneosly
+--> traverse each other iteratively, untill one of the node reaches NULL, make that point to the beginning of the other LL.
+  --> once the other dummy node reaches NULL, make that point to the head of the other dummy node.
+ --> now traverse each of them together, where they collide is the intrsc of LL
+ 
+ 
+ class Solution {
 public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* dummy = new ListNode();//create a dummy node linked list to store the answer
-        ListNode* temp = dummy;//make a temp node to point to the head of the dummy linked list
-        //and this temp is gonna iterate through the dummy linked list
-        int carry = 0;//make carry as 0, which is gonna store the carry of the sum
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA == NULL || headB == NULL)
+            return NULL;
         
-        while(l1 != NULL || l2 != NULL || carry != 0)//iterated till we reach either ends of the LLs or till the carry becomes 0
+        ListNode* a = headA;//we make the dummy node point to the head of LL-A
+        ListNode* b = headB;//we make the dummy node point to the head of LL-B
+        
+        while(a != b)
         {
-            int sum = 0;//initialse sum as 0, which is going to store the sum of the LLs
-            if(l1 != NULL)
-            {
-                sum = sum + l1->val;//if l1 is not NULL, then add that nodes's value to the sum
-                l1 = l1->next;//move to the next in LL l1
-            }
+            if(a == NULL)//once u reach NULL, point to the other LL's starting
+                a = headB;
+            else
+                a = a->next;//else move next
             
-            if(l2 != NULL)
-            {
-                sum = sum + l2->val;//if l1 is not NULL, then add that nodes's value to the sum
-                l2 = l2->next;//move to the next in LL l1
-            }
-            sum = sum + carry;//add carry to sum
-            carry = sum / 10;// we get carry by doing integer dvision of sum and 10
-            ListNode* node = new ListNode(sum % 10);//create a node and add the sum%10 to it 
-            temp->next = node;//make temp's next as node
-            temp = temp->next;//move temp next iteratively as we traverse through the 
+            if(b == NULL)
+                b = headA;
+            else
+                b = b->next;
+                
         }
-        return dummy->next;//since dummy->next would be the starting of the new LL
-        
-        
+        return a;
     }
 };
-
-
-1
+ 
