@@ -846,4 +846,44 @@ public:
 
     }
 };
+
+
+
+17.) Merge two sorted Linked List
+
+--> There are two approaches, to sort it using external space and the other technique is to do it in-place
+--> TC = O(M + N) and SC = O(1) -----> for in-place(optimised)
+  
+  
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        if(l1 == NULL)//if the first linked list is empty, then return the second linked list
+            return l2;
+        
+        if(l2 == NULL)//if the second linked list is empty, then return the first linked list
+            return l1;
+        
+        if(l1->val > l2->val)//we want the linked list to start from l1, so l1 should have the smaller value
+            std::swap(l1, l2);//so we swap it so that linked list starts from l1
+        
+        ListNode* res = l1;//now, since l1 has minimum value, res points to l1
+        
+        while(l1 != NULL && l2 != NULL)
+        {
+            ListNode* temp = NULL;//we create a temp and assign to NULL each time
+            while(l1 != NULL && l1->val <= l2->val)//as long as l1->val is less than l2->val, stay in LL1 itself
+            {
+                temp = l1;//assign the val of l1 to temp each iteration
+                l1 = l1->next;//move iteratively
+            }
+            //when the value of l1->val > l2->val, it breaks out of the loop
+            temp->next = l2;//change the links
+            
+            std::swap(l1, l2);//always the smaller element should be in l1, so we swap it
+        }
+        return res;
+    }
+};
+  
  
