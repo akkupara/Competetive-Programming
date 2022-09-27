@@ -771,6 +771,43 @@ class Solution
 
 
 
-15.) Intersection of two Linked List
+15.) Add two Numbers from two Linked List
 
--->
+--> only one approach which is the optimised approach
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode();//create a dummy node linked list to store the answer
+        ListNode* temp = dummy;//make a temp node to point to the head of the dummy linked list
+        //and this temp is gonna iterate through the dummy linked list
+        int carry = 0;//make carry as 0, which is gonna store the carry of the sum
+        
+        while(l1 != NULL || l2 != NULL || carry != 0)//iterated till we reach either ends of the LLs or till the carry becomes 0
+        {
+            int sum = 0;//initialse sum as 0, which is going to store the sum of the LLs
+            if(l1 != NULL)
+            {
+                sum = sum + l1->val;//if l1 is not NULL, then add that nodes's value to the sum
+                l1 = l1->next;//move to the next in LL l1
+            }
+            
+            if(l2 != NULL)
+            {
+                sum = sum + l2->val;//if l1 is not NULL, then add that nodes's value to the sum
+                l2 = l2->next;//move to the next in LL l1
+            }
+            sum = sum + carry;//add carry to sum
+            carry = sum / 10;// we get carry by doing integer dvision of sum and 10
+            ListNode* node = new ListNode(sum % 10);//create a node and add the sum%10 to it 
+            temp->next = node;//make temp's next as node
+            temp = temp->next;//move temp next iteratively as we traverse through the 
+        }
+        return dummy->next;//since dummy->next would be the starting of the new LL
+        
+        
+    }
+};
+
+
+1
