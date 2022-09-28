@@ -887,3 +887,60 @@ public:
 };
   
  
+
+18.) Add 1 to a number represented as linked list
+
+-->there are two cases
+-->One if the last digit is not a 9, so we juz change the last node value by 1
+-->if the last node value is 9, then we do it differently
+-->we first reverse it, add 1 to the right most node and we finally reverse the result
+
+
+
+class Solution
+{
+    public:
+    
+    Node* Reverse(Node *head)
+    {
+        Node* curr = head;//current pointer
+        Node* prev = NULL;
+        Node* next;
+        
+        while(curr != NULL)//we traverse till current is not NULL
+        {
+            next = curr->next;//storing next node
+            curr->next = prev;//changing the link backwards
+            prev = curr;//prev gets updated
+            curr = next;//curr gets updated
+        }
+        return prev;
+    }
+    Node* addOne(Node *head) 
+    {
+        //if the last digit is not 9, we just simple return by adding 1, 
+        //if the last digit is 9, we slove it differently
+        
+        head = Reverse(head);//we reverse the Linked List
+        Node* current = head;//point to the head of the reversed List
+        
+        int carry = 1;
+        
+        while(carry != 0)
+        {
+            current->data = current->data + 1;//we add 1 to the data part
+            if(current->data < 10)//if it is less than ten, juz reverse it again, and return it
+                return Reverse(head);
+            else
+                current->data = 0;//if the sum is 10, then we make it zero and take the carry rightwards;
+                
+                
+            if(current->next == NULL)//if it is the end of the list, we break from the loop
+                break;
+            else
+                current = current->next;//move current to the next node where carry will still be 1
+        }
+        current->next = new Node(1);//if carry exceeds the size of the linked list
+        return Reverse(head);
+    }
+};
