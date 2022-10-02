@@ -362,3 +362,369 @@ public:
 6.) Unique path with obstacles
 
 
+--> Same as the above question but contains some obstacles
+--> same code but if we reach the obstacle, juz return zero
+--> need to solve in much more optimised way
+
+
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+        vector<vector<int> > dp(m + 1, vector<int> (n + 1, 0));
+        dp[0][1] = 1;
+        for (int i = 1; i <= m; i++)
+            for (int j = 1; j <= n; j++)
+                if (obstacleGrid[i - 1][j - 1] != 1)
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                else
+                    dp[i][j] = 0;
+        return dp[m][n];
+    } 
+};
+
+
+
+
+7.) Minimum path sum
+
+
+--> Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+
+Input: grid = [[1,3,1]
+	       [1,5,1]
+	       [4,2,1]]
+Output: 7
+Explanation: Because the path 1 → 3 → 1 → 1 → 1 minimizes the sum.
+	
+	
+	
+IMPORTANT QS
+
+
+Using memoization:
+
+class Solution {
+public://using memoization
+    int f(int i, int j, vector<vector<int>>& grid, vector<vector<int>> &dp)
+    {
+        if(i == 0 && j == 0)//if both i and j are zero then add that to the min path
+            return grid[i][j];
+        
+        if(i < 0 || j < 0)//if it goes out of index, then add some very large number
+            return 1e9;
+        
+        if(dp[i][j] != -1) //if it is already present, then return the stored answer
+            return dp[i][j];
+        
+        int up = grid[i][j] + f(i-1, j, grid, dp);//add that path element and move up
+        int left = grid[i][j] + f(i, j-1, grid, dp);//add that path element and move left
+        
+        return dp[i][j] = min(up, left);//return the minimum since we want the minimum path length
+    }
+    int minPathSum(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        
+        return f(n-1, m-1, grid, dp);
+        
+    }
+};
+
+
+
+Using Tabulation and space optimisation
+
+
+class Solution {
+public://using tabulation with space optimisation
+    
+    
+    int minPathSum(vector<vector<int>>& grid) {
+        
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        vector<int> prev(m, 0);
+        vector<int> cur(m, 0);
+        
+        int i, j;
+        for(i=0; i< n; i++)
+            for(j=0; j < m; j++)
+            {
+                if(i == 0 && j == 0)
+                    cur[j] = grid[i][j];
+                
+                
+                else
+                {
+                    int up = grid[i][j];
+                    if(i > 0)
+                        up = up + prev[j];//add that path element and move up
+                    else
+                        up = up + 1e9;
+
+                    int left = grid[i][j];
+                    if(j > 0)
+                        left = left + cur[j-1];//add that path element and move left
+                    else
+                        left = left + 1e9;
+
+                    cur[j] = min(up, left);
+                }
+                prev = cur;
+            }
+        return prev[m-1];
+    }
+};
+
+
+
+
+8.) Triangle
+
+--> Given a triangle array, return the minimum path sum from top to bottom.
+
+For each step, you may move to an adjacent number of the row below. More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
+
+ 
+
+Example 1:
+
+Input: triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
+Output: 11
+Explanation: The triangle looks like:
+   2
+  3 4
+ 6 5 7
+4 1 8 3
+The minimum path sum from top to bottom is 2 + 3 + 5 + 1 = 11 (underlined above).
+Example 2:
+
+Input: triangle = [[-10]]
+Output: -10
+	
+	
+	
+	
+Memoization code
+
+
+class Solution {
+public://memoization code
+    int solve(int i, int j, int n, vector<vector<int>>&triangle, vector<vector<int>>&dp) {
+		if(i == n - 1)
+			return triangle[i][j];
+		if(dp[i][j] != -1)
+			return dp[i][j];
+		int bottom = triangle[i][j] + solve(i+1, j, n, triangle, dp);
+		int  bottom_right = triangle[i][j] + solve(i+1, j+1, n, triangle, dp);
+		return dp[i][j] = min(bottom, bottom_right);
+	}
+    
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+		vector<vector<int>>dp(n, vector<int>(n, -1));
+		return solve(0, 0, n, triangle, dp);
+    }
+};
+
+
+
+Tabulation with space optimisation
+
+
+class Solution {
+public://space otimisation with tabulation
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        vector<int> front(n, 0);
+        
+        for(int i=n-1; i >= 0; i--)
+        {
+            vector<int> cur(n, 0);
+            for(int j=i; j >= 0; j--)
+            {
+                if(i == n-1)
+                    cur[j] = triangle[i][j];
+                else
+                {
+                    int down = triangle[i][j] + front[j];
+                    int dg = triangle[i][j] + front[j+1];
+                    cur[j] = min(down, dg);
+                }
+            }
+            front = cur;
+        }
+         
+      return front[0]; 
+    }
+    
+};
+
+
+
+
+9.) Minimum Falling path sum
+
+--> Given an n x n array of integers matrix, return the minimum sum of any falling path through matrix.
+--> Example 1:
+
+
+Input: matrix = [[2,1,3]
+		 [6,5,4]
+		 [7,8,9]]
+Output: 13
+Explanation: There are two falling paths with a minimum sum as shown.
+	
+	
+	
+	
+Memoization code:
+
+
+class Solution {
+public://Memoization code
+    int f(int i, int j, vector<vector<int>>& matrix, vector<vector<int>> &dp)
+    {
+        if(j < 0 || j >= matrix[0].size())
+            return 1e8;//if in column it goes out of range, the return some very negative value
+        
+        
+        if(i == 0)
+            return matrix[0][j];
+        
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        
+        int up = matrix[i][j] + f(i-1, j, matrix, dp);
+        int ld = matrix[i][j] + f(i-1, j-1, matrix, dp);
+        int rd = matrix[i][j] + f(i-1, j+1, matrix, dp);
+        
+        return dp[i][j] = min(up, min(ld, rd));
+    }
+    
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        
+        vector<vector<int>> dp(n, vector<int> (m, -1));
+        
+        int min = 1e8;
+        
+        for(int j=0; j < m; j++)
+        {
+            min = min(maxi, f(n-1, j ,matrix, dp));
+        }
+        return min;
+        
+    }
+};
+
+
+
+
+Tabulation code:
+
+class Solution {
+public://tabulation code
+
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        
+        vector<vector<int>> dp(n, vector<int> (m, 0));
+        for(int j=0; j < m; j++)
+        {
+            dp[0][j] = matrix[0][j];//filling initially with the first row from the matrix into the dp table
+        }
+        
+        for(int i=1; i < n; i++)
+            for(int j=0; j < m; j++)
+            {
+                int up = matrix[i][j] + dp[i-1][j];
+                
+                int ld = matrix[i][j];
+                    if(j-1 >= 0)
+                        ld = ld + dp[i-1][j-1];
+                    else
+                        ld = ld + 1e9;
+                
+                
+                int rd = matrix[i][j];
+                    if(j+1 < m)
+                        rd = rd + dp[i-1][j+1];
+                    else
+                        rd = rd + 1e9;
+                
+                dp[i][j] = min(up, min(ld, rd));
+            }
+        
+        
+        int mini = 1e8;
+        
+        for(int j=0; j < m; j++)
+        {
+            mini = min(mini, dp[n-1][j]);
+        }
+        return mini;
+        
+    }
+};
+
+
+
+
+Tabulation with space optimisation:
+
+class Solution {
+public://tabulation with space optimisation code
+
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        
+        vector<int> prev(m, 0), cur(m, 0);
+        for(int j=0; j < m; j++)
+        {
+            prev[j] = matrix[0][j];//filling initially with the first row from the matrix into the dp table
+        }
+        
+        for(int i=1; i < n; i++)
+        {
+            for(int j=0; j < m; j++)
+            {
+                int up = matrix[i][j] + prev[j];
+                
+                int ld = matrix[i][j];
+                    if(j-1 >= 0)
+                        ld = ld + prev[j-1];
+                    else
+                        ld = ld + 1e9;
+                
+                
+                int rd = matrix[i][j];
+                    if(j+1 < m)
+                        rd = rd + prev[j+1];
+                    else
+                        rd = rd + 1e9;
+                
+                cur[j] = min(up, min(ld, rd));
+            }
+            prev = cur;
+        }
+        
+        
+        int mini = 1e8;
+        
+        for(int j=0; j < m; j++)
+        {
+            mini = min(mini, prev[j]);
+        }
+        return mini;
+        
+    }
+};
+
+
