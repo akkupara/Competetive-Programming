@@ -728,3 +728,228 @@ public://tabulation with space optimisation code
 };
 
 
+
+
+10.) Subset sum problem
+
+
+--> can be solved by recursion 
+
+class Solution{   
+public:
+    
+    void func(int index, int sum, vector<int> &arr, vector<int> &ans)
+    {
+        if(index == arr.size())
+        {
+            ans.push_back(sum);//whenever we reach the end of the tree, we get the sum and then return
+            return;//if we reach the end of the recursion tree, then we break
+        }
+        //in recursion tree, either we pick or not pick
+        
+        //when we pick
+        func(index+1, sum + arr[index], arr, ans);//we move the index by 1 and add it to the sum
+        
+        //when we do not pick
+        func(index+1, sum, arr, ans);// we jux move to the next index and the sum remains the same
+        
+    }
+    
+    bool isSubsetSum(vector<int>arr, int sum){
+        vector<int> ans;//to store the subset sum which is the answer
+        func(0, 0, arr, ans);// (index, sum, arr, size, ans)
+        sort(ans.begin(), ans.end());
+        
+        for(int i=0; i < ans.size(); i++)
+        {
+            if(ans[i] == sum)
+                return true;
+            else
+                continue;
+        }
+        return false;
+
+    }
+};
+
+
+
+
+--> Another approach using recursion which gives TLE:
+
+class Solution{   
+public:
+    bool f(int ind, int target, vector<int> &arr)
+    {
+        if(target == 0)
+            return true;//if at any point the target becomes zero, return true
+            //because we got subsequence which made the target zero
+            
+        if(ind == 0)
+            return (arr[0] == target);//if we reach the first index, if that first index element is 
+            //equal to the target, we return true else false
+        
+        bool nottake = f(ind-1, target, arr);//if we dont pick it we juz move back to the prev index
+        bool take = false;//intially false
+        
+        if(target >= arr[ind])//we pick the element only if it is less than the target
+            take = f(ind-1, target-arr[ind], arr);
+            
+        return take | nottake;
+        
+    }
+    
+    bool isSubsetSum(vector<int>arr, int sum){
+        int n = arr.size();
+        return f(n-1, sum, arr);//the index is n-1, target is sum
+        
+
+    }
+};
+
+
+
+
+--> using memoization and dp table
+
+
+class Solution{   
+public://using memoization and dp
+    bool f(int ind, int target, vector<int> &arr, vector<vector<int>> &dp)
+    {
+        if(target == 0)
+            return true;//if at any point the target becomes zero, return true
+            //because we got subsequence which made the target zero
+            
+        if(ind == 0)
+            return (arr[0] == target);//if we reach the first index, if that first index element is 
+            //equal to the target, we return true else false
+            
+        if(dp[ind][target] != -1)
+            return dp[ind][target];
+            
+        bool nottake = f(ind-1, target, arr, dp);//if we dont pick it we juz move back to the prev index
+        bool take = false;//intially false
+        
+        if(target >= arr[ind])//we pick the element only if it is less than the target
+            take = f(ind-1, target-arr[ind], arr, dp);
+            
+        return dp[ind][target] = take | nottake;
+        
+    }
+    
+    bool isSubsetSum(vector<int>arr, int sum){
+        int n = arr.size();
+        vector<vector<int>> dp(n, vector<int>(sum+1, -1));
+        return f(n-1, sum, arr, dp);//the index is n-1, target is sum
+    
+    }
+};
+
+
+
+
+11.) Partition Equal Subset Sum
+
+Given a non-empty array nums containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+
+ 
+
+Example 1:
+
+Input: nums = [1,5,11,5]
+Output: true
+Explanation: The array can be partitioned as [1, 5, 5] and [11].
+Example 2:
+
+Input: nums = [1,2,3,5]
+Output: false
+Explanation: The array cannot be partitioned into equal sum subsets.
+	
+
+--> Same as the above qs, where if the sum is odd, we return false
+--> If it is even, then we pass the sum/2, to check if there exists a subset
+--> If we check for one part of the array, the other part automatically gets taken care of
+--> if the sum is even, with sum/2, we pass this to the previous qs's function and return the ans
+
+	
+	
+class Solution {
+public:
+    
+    bool f(int ind, int target, vector<int> &arr, vector<vector<int>> &dp)
+    {
+        if(target == 0)
+            return true;//if at any point the target becomes zero, return true
+            //because we got subsequence which made the target zero
+            
+        if(ind == 0)
+            return (arr[0] == target);//if we reach the first index, if that first index element is 
+            //equal to the target, we return true else false
+            
+        if(dp[ind][target] != -1)
+            return dp[ind][target];
+            
+        bool nottake = f(ind-1, target, arr, dp);//if we dont pick it we juz move back to the prev index
+        bool take = false;//intially false
+        
+        if(target >= arr[ind])//we pick the element only if it is less than the target
+            take = f(ind-1, target-arr[ind], arr, dp);
+            
+        return dp[ind][target] = take | nottake;
+        
+    }
+    
+    
+    bool canPartition(vector<int>& nums) {
+        int n = nums.size();
+        int sum = 0;
+        bool ans = false;
+        
+    
+        for(int i=0; i < n; i++)
+        {
+            sum = sum + nums[i];
+        }
+        
+        if(sum % 2 == 1)
+            return false;
+        
+        else if(sum % 2 == 0)
+        {
+            int target = sum/2;
+            vector<vector<int>> dp(n, vector<int>(target+1, -1));
+             ans = f(n-1, target, nums, dp);
+        }
+       return ans;
+    }
+};
+
+
+
+
+12.) Partition array into two arrays to minimize sum difference
+
+--> You are given an integer array nums of 2 * n integers. You need to partition nums into two arrays of length n to minimize the absolute difference of the sums of the arrays. To partition nums, put each element of nums into one of the two arrays.
+
+Return the minimum possible absolute difference.
+
+ 
+
+Example 1:
+
+example-1
+Input: nums = [3,9,7,3]
+Output: 2
+Explanation: One optimal partition is: [3,9] and [7,3].
+The absolute difference between the sums of the arrays is abs((3 + 9) - (7 + 3)) = 2.
+Example 2:
+
+Input: nums = [-36,36]
+Output: 72
+Explanation: One optimal partition is: [-36] and [36].
+The absolute difference between the sums of the arrays is abs((-36) - (36)) = 72.
+	
+	
+
+
