@@ -75,3 +75,84 @@ public:
 
 
 
+2.) Pascal's triangle
+ 
+ 
+Given an integer numRows, return the full pascal trinagle till with numRows rows
+
+
+In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+Example 1:
+
+Input: numRows = 5
+Output:  [1]
+        [1,1]
+       [1,2,1]
+      [1,3,3,1]
+     [1,4,6,4,1]
+
+
+TC = 0(N*N) and SC = 0(N*N)
+ 
+ 
+ 
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> r(numRows);
+        for(int i=0;i < numRows; i++)
+        {
+            r[i].resize(i+1);//each iteration we increase the size of the triangle
+            r[i][0] = r[i][i] = 1;//we initialise the first and the last column to 0
+            
+            for(int j=1; j < i; j++)
+            {
+                r[i][j] = r[i-1][j-1] + r[i-1][j];// 
+            }
+        }
+        return r;
+    }
+};
+
+
+
+
+3.) Next Permutation
+
+
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int n = nums.size();
+        int k,l;
+        for(k=n-2; k >= 0; k--)//used to find the index which has value juz greater than the last index
+        {
+            if(nums[k] < nums[k+1])   //given the array 1 3 5 4 2 traverse from the end, find which element is juz greater than 2, here it is 3, 
+                //so ind1 = 1(index no)
+                break;//ind1
+        }
+        if(k < 0)//if there is no break point simply reverse it
+        {
+            reverse(nums.begin(), nums.end());
+        }
+        else
+        {
+            for(l=n-1; l> k ;l--)
+            {
+                if(nums[l] > nums[k])// with respect to ind1, check which is the next element that is juz greater than 3, which is 4
+                    break;//ind2 point to index 3
+            }
+            swap(nums[k], nums[l]);//swap ind1 with and ind2
+        
+        //then reverse(int1+1, last)
+        
+        reverse(nums.begin()+k+1, nums.end());
+        }
+        
+        
+        
+        
+        
+    }
+};
+
