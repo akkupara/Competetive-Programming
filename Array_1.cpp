@@ -148,11 +148,157 @@ public:
         
         reverse(nums.begin()+k+1, nums.end());
         }
+     
+    }
+};
+
+
+
+
+4.) Maximum subarray
+
+
+Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+
+A subarray is a contiguous part of an array.
+
+ 
+
+Example 1:
+
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.
+Example 2:
+
+Input: nums = [1]
+Output: 1
+Example 3:
+
+Input: nums = [5,4,-1,7,8]
+Output: 23
+ 
+ 
+ 
+ 
+ --> using kadane's algorithm: TC = O(N) && SC = O(1)
+ 
+ 
+ 
+ class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int n = nums.size();
+        int maxi = nums[0];//initialize maxi to the nums[0]
+        int sum = 0;//sum is 0
         
+        for(int i=0; i < n; i++)
+        {
+            //each iteration find the sum, and chack some conditions
+            sum = sum + nums[i];
+            
+            if(sum > maxi)
+                maxi = sum;//update maxi
+            
+            if(sum < 0)//if sum goes less than 0, make it zero and start it fresh
+                sum = 0;
+        }
+        return maxi;
+    }
+};
+
+
+
+
+5.) Sort colours
+
+
+--> Example 1:
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+Example 2:
+
+Input: nums = [2,0,1]
+Output: [0,1,2]
+
+
+counting sort algorthim TC = O(N)+O(N)
+ 
+ 
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int zero = 0;
+        int one = 0;
+        int two = 0;
         
+        for(int i=0; i < nums.size(); i++)
+        {
+            if(nums[i] == 0)
+                zero++;
+            else if(nums[i] == 1)
+                one++;
+            else if(nums[i] == 2)
+                two++;
+        }
+        
+        nums.clear();
+        
+        while(zero != 0)
+        {
+            nums.push_back(0);
+            zero--;
+        }
+        
+        while(one != 0)
+        {
+            nums.push_back(1);
+            one--;
+        }
+        
+        while(two != 0)
+        {
+            nums.push_back(2);
+            two--;
+        }
         
         
         
     }
 };
 
+
+
+
+Most optimal method (Dutch national flag algorithm)
+ 
+--> TC = O(N) and SC = O(1)
+ 
+ 
+class Solution {
+public://most optimum algorithm - national flag algorithm
+    void sortColors(vector<int>& nums) {
+        int n = nums.size();
+        
+        int low = 0, mid = 0;
+        int high = n-1;
+        
+        while(mid <= high)
+        {
+            if(nums[mid] == 0)
+            {
+                swap(nums[low], nums[mid]);
+                low++;
+                mid++;
+            }
+            else if(nums[mid] == 1)
+                mid++;
+            else if(nums[mid] == 2)
+            {
+                swap(nums[mid], nums[high]);
+                high--;
+            }
+        }
+    }
+};
