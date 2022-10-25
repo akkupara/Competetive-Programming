@@ -548,3 +548,387 @@ public:
         return ans;
     }
 };
+
+
+
+
+10.) Maximum product subarray
+
+--> Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product.
+
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+	
+	
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) 
+    {
+        int n = nums.size();
+        
+        int max_ending = nums[0], min_ending = nums[0];
+        int max_overall = nums[0];
+        
+        for(int i=1; i < n; i++)
+        {
+            int temp = max_ending;//to retain the original value
+            max_ending = max({nums[i], max_ending*nums[i], min_ending*nums[i]});
+            min_ending = min({nums[i], temp*nums[i], min_ending*nums[i]});
+            max_overall = max(max_overall, max_ending);
+        }
+        return max_overall;
+    }
+};
+
+
+11.) Binary search
+
+--> If target exists, then return its index. Otherwise, return -1.
+--> Input: nums = [-1,0,3,5,9,12], target = 9
+Output: 4
+Explanation: 9 exists in nums and its index is 4
+	
+	
+class Solution {
+public:
+    int search(vector<int>& nums, int target) 
+    {
+        int n = nums.size();
+        int start = 0, end = n-1;
+        int mid = (start+end)/2;
+        
+        
+        while(start <= end)
+        {
+            int mid = (start+end)/2;
+            if(nums[mid] == target)
+                return mid;
+            
+            else if(nums[mid] < target)
+            {
+                start = mid+1;
+            }
+            else if(nums[mid] > target)
+            {
+                end = mid-1;
+            }
+            
+        }
+        
+        return -1;
+    }
+};
+
+
+
+12.) Peak Element
+
+--> A peak element is an element that is strictly greater than its neighbors.
+--> We have to return the index of the peak element
+
+Input: nums = [1,2,3,1]
+Output: 2
+Explanation: 3 is a peak element and your function should return the index number 2.
+	
+1.) Using binary search: Tc = O(log n) and Sc = O(1)
+	
+	
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        int n = nums.size();
+        int low = 0, high = n-1;
+        
+        while(low < high)
+        {
+            int mid = (low + high)/2;
+            if(nums[mid] < nums[mid+1])
+                low = mid+1;//move low forward
+            else if(nums[mid] > nums[mid+1])
+                high = mid;//move low backwards
+        }
+        return low;
+        
+    }
+};
+
+
+
+2.) Sequential search: TC = O(N) and SC = O(1)
+	
+edge cases: 1.) only one element
+	    2.) peak is the first element
+	    3.) peak is the last element
+	    
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        int n = nums.size();
+        
+        //edge cases
+        if(n==1)//if only one element is present and its index is obviously 0
+            return 0;//so return zero
+        
+        if(nums[0] > nums[1])//if peak is the first element
+            return 0;
+        
+        if(nums[n-1] > nums[n-2])//if peak is the last ele
+            return n-1;
+        
+        
+        for(int i=1; i < n-1; i++)
+        {
+            if(nums[i] > nums[i-1] && nums[i] > nums[i+1])
+                return i;
+        }
+            
+        return -1;
+    }
+};
+
+
+
+3.) Using STL: TC = o(N) and SC = O(1)
+
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        return max_element(nums.begin(), nums.end()) - nums.begin();
+    }
+};
+
+
+
+
+14.) Search element in a rotated sorted array:
+
+--> Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k
+--> Given the array nums after the possible rotation and an integer target, 
+return the index of target if it is in nums, or -1 if it is not in nums.
+	
+Example 1:
+
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
+	
+	
+	
+1.) Linear search: TC = O(N) and SC = O(1)
+	
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        for(int i=0; i < nums.size(); i++)
+        {
+            if(nums[i] == target)
+                return i;
+        }
+        return -1;
+    }
+};
+
+
+
+2.) Using Binary search: TC = O(log n) and SC = O(1)
+	
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n = nums.size();
+        int low = 0, high = n-1;
+        
+        while(low <= high)
+        {
+            int mid = (low+high)/2;
+            
+            if(nums[mid] == target)
+                return mid;
+            
+            //if left array is sorted
+            if(nums[low] <= nums[mid])
+            {
+                if(target >= nums[low] && target <= nums[mid])
+                    high = mid-1;
+                else
+                    low = mid+1;
+            }
+            
+            //if right array is sorted
+            else if(nums[mid] <= nums[high])
+            {
+                if(target >= nums[mid] && target <= nums[high])
+                    low = mid+1;
+                else
+                    high = mid-1;
+                    
+            }
+        }
+        return -1;
+    }
+};
+
+
+
+15.) Search in Rotated Sorted Array II
+
+--> Before being passed to your function, nums is rotated at an unknown pivot index k
+--> Given the array nums after the rotation and an integer target, return true if target is in nums, or false if it is not in nums.
+--> This problem is similar to Search in Rotated Sorted Array, but nums may contain duplicates.
+	
+
+Input: nums = [2,5,6,0,0,1,2], target = 0
+Output: true
+	
+
+1.) Using linear search: TC = O(N) and SC = O(1)
+	
+
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int n = nums.size();
+        
+        for(int i=0; i < n; i++)
+        {
+            if(target == nums[i])
+                return true;
+        }
+        return false;
+    }
+};
+
+
+
+2.) Using Binary Search: TC = O(log n) and SC = O(1)
+
+--> same as the above binary search code, but here we are also chekcing for duplicates
+
+
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int n = nums.size();
+        int low = 0, high = n-1;
+        
+        while(low <= high)
+        {
+            int mid = (low+high)/2;
+            
+            if(nums[mid] == target)
+                return true;
+            
+            if(nums[low] == nums[mid] && nums[mid] == nums[high])//checking for duplicates
+            {
+                high--;
+                low++;
+            }
+            
+            //if left array is sorted
+            else if(nums[low] <= nums[mid])
+            {
+                if(target >= nums[low] && target <= nums[mid])
+                    high = mid-1;
+                else
+                    low = mid+1;
+            }
+            
+            //if right array is sorted
+            else if(nums[mid] <= nums[high])
+            {
+                if(target >= nums[mid] && target <= nums[high])
+                    low = mid+1;
+                else
+                    high = mid-1;
+                    
+            }
+        }
+        return false;
+    }
+};
+
+
+
+16.) Find minimum in sorted rotated array
+
+
+1.) linear search: TC = O(N) and SC = o(1)
+	
+	
+int index = min_element(nums.begin(), nums.end()) - nums.begin();
+return nums[index];
+
+
+2.) Using binary search: TC = O(log n) and SC = O(1)
+	
+In this problem, we have only three cases.
+
+Case 1. The leftmost value is less than the rightmost value in the list: This means that the list is not rotated.
+e.g> [1 2 3 4 5 6 7 ]
+
+Case 2. The value in the middle of the list is greater than the leftmost and rightmost values in the list.
+e.g> [ 4 5 6 7 0 1 2 3 ]
+
+Case 3. The value in the middle of the list is less than the leftmost and rightmost values in the list.
+e.g> [ 5 6 7 0 1 2 3 4 ]
+
+As you see in the examples above, if we have case 1, we just return the leftmost value in the list. If we have case 2, 
+we just move to the right side of the list. If we have case 3 we need to move to the left side of the list.
+	
+	
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n = nums.size();
+        int low = 0, high = n-1;
+        
+        while(low < high)
+        {
+            int mid = (low + high)/2;
+            
+            if(nums[low] < nums[high])
+                return nums[low];
+            
+            if(nums[mid] > nums[high])
+                low = mid+1;
+            else if(nums[mid] < nums[high])
+                high = mid;
+        }
+        return nums[low];
+    }
+};
+
+
+
+15.) Single Element in a Sorted Array
+
+--> You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.
+--> Return the single element that appears only once.
+Example 1:
+
+Input: nums = [1,1,2,3,3,4,4,8,8]
+Output: 2
+
+	
+1.) Linear search using xor : TC = O(N) and SC = O(1)
+	
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int n = nums.size();
+        
+        int xorr = 0;
+        
+        for(auto num: nums)
+        {
+            xorr = xorr ^ num;
+        }
+        return xorr;
+    }
+};
+
+
+
+2.) Binary search: TC = O(log n) and SC = O(1)
+	
+
