@@ -72,3 +72,159 @@ class Solution{
     
     }
 };
+
+
+
+
+
+
+3.) Remove Duplicates from sorted list:
+
+case I: when neighbours are not equal, if not then juz move to the next node
+
+case II: when neighbours are equal, then change the links
+    
+    
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(head == NULL)
+            return head;
+        ListNode *curr = head;
+        while(curr->next != NULL)
+        {
+            if(curr->val != curr->next->val)// case I
+                curr = curr->next;
+            else
+                curr->next = curr->next->next;// case II
+        }
+        return head;
+    }
+};
+
+
+
+4.) Remove Duplicates from sorted list II 
+
+https://www.youtube.com/watch?v=R6-PnHODewY
+
+--> Given the head of a sorted linked list, delete all nodes that have duplicate numbers
+--> leaving only distinct numbers from the original list.
+    
+    
+    case I: when neighbours are not equal, move only prev pointer
+    case II: when neighbours are equal, move only head pointer
+    
+    
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode *dummy=new ListNode(0,head);
+        ListNode *prev=dummy;
+        
+        while(head!=NULL)
+        {
+       
+            if(head->next!=NULL && head->val==head->next->val)
+            {
+                while(head->next!=NULL && head->val==head->next->val)
+                    head=head->next; // case II
+
+                prev->next=head->next;
+            }
+            else if(head->next!=NULL && head->val != head->next->val)
+                prev=prev->next; // case I
+
+
+            head=head->next; // always move head 
+        }
+        
+        return dummy->next;
+    }
+};
+
+
+5.) Remove duplicates from an unsorted linked list
+
+we are creating a hashmap and checking if that node is already present or not
+    
+case I: If that node is already present, then prev->next = curr->next, and then delete curr
+
+case II: If that node is not already present, then inset it into set and make prev = curr
+
+always make curr = prev->next
+
+
+class Solution
+{
+    public:
+    //Function to remove duplicates from unsorted linked list.
+    Node * removeDuplicates( Node *head) 
+    {
+        unordered_set<int> set;
+        Node* curr = head;
+        Node* prev = NULL;
+        
+        while(curr != NULL)
+        {
+            if(set.find(curr->data) != set.end()) // case I 
+            {
+                prev->next = curr->next;//change the link
+                delete(curr);//delete the node
+            }
+            else
+            {
+                set.insert(curr->data);// case II
+                prev = curr;
+                
+            }
+            curr = prev->next; //only then it can point to the new curr after removal of node
+        }
+        return head;
+    }
+};
+
+
+
+6.) Minimum Size Subarray Sum
+
+
+--> Given an array of positive integers nums and a positive integer target, return the minimal length of a subarray whose sum is greater than or equal to target. 
+--> If there is no such subarray, return 0 instead.
+    
+
+Input: target = 7, nums = [2,3,1,2,4,3]
+Output: 2
+Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+
+    
+    
+--> move R, if values from L to R is less than target
+--> move L, if values from L to R is greater than target
+
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int l = 0;//left pointer
+        int total = 0; //the total sum from L to R
+        int res = 1e9;//answer which is the min length of the subarray
+        
+        for(int r=0; r < nums.size(); r++)
+        {
+            total += nums[r];
+            while(total >= target)
+            {
+                res = min(res, r-l+1);
+                total = total - nums[l];
+                l++;
+            }
+        }
+        
+        if(res == 1e9)
+            return 0;
+        
+        return res;
+        
+    }
+};
