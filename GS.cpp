@@ -186,7 +186,7 @@ class Solution
 
 
 
-6.) Minimum Size Subarray Sum
+6.) Minimum Size Subarray Sum - two pointer and SLIDING WINDOW
 
 
 --> Given an array of positive integers nums and a positive integer target, return the minimal length of a subarray whose sum is greater than or equal to target. 
@@ -228,3 +228,128 @@ public:
         
     }
 };
+
+
+
+
+8.) Minimum path sum
+
+--> Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+
+--> You can only move either down or right at any point in time.
+    
+
+Recursion solution:
+
+class Solution {
+public:
+    int f(int i, int j, vector<vector<int>> &grid)
+    {
+        if(i==0 && j==0)
+            return grid[i][j];
+        if(i < 0 || j < 0)
+            return 1e9;
+        
+        int up = grid[i][j] + f(i-1, j, grid);
+        int left = grid[i][j] + f(i, j-1, grid);
+        
+        return min(up, left);
+        
+    }
+    int minPathSum(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        return f(n-1, m-1, grid);
+    }
+};
+
+
+
+
+Tabulation:
+
+
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> dp(n, vector<int>(m, 0));
+        
+        for(int i=0; i < n; i++)
+        {
+            for(int j=0; j < m; j++)
+            {
+                if(i==0 && j==0)
+                    dp[i][j] = grid[i][j];
+                else
+                {
+                    int up = grid[i][j];
+                    if(i>0)
+                        up = up + dp[i-1][j];
+                    else
+                        up = up + 1e9;
+                    
+                    int left = grid[i][j];
+                    if(j>0)
+                        left = left + dp[i][j-1];
+                    else
+                        left = 1e9;
+                    
+                    dp[i][j] = min(left, up);
+                
+                }
+            }
+        }
+        return dp[n-1][m-1];
+    }
+};
+
+
+10.) Index pair of a string
+
+--> Given a text string and words (a list of strings), return all index pairs [i, j] so that the substring text[i]...text[j] 
+is in the list of words.
+    
+
+Input: text = "thestoryofleetcodeandme", words = ["story","fleet","leetcode"]
+Output: [[3,7],[9,13],[10,17]]
+
+
+
+vector<vector<int>> indexPairs(string text, vector<string> &words)
+{
+    vector<vector<int>> res;
+    
+    for(int i=0; i < words.size(); i++)
+    {
+        int start = 0;
+        auto pos = text.find(words[i], start);
+        while(pos != string::npos)
+        {
+            res.push_back({pos, words.size()+pos-1});
+            start = pos+1;
+            pos = text.find(words[i], start);
+        }
+    }
+    sort(res.begin(), res.end());
+    
+    return res;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
