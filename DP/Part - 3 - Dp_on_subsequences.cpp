@@ -410,6 +410,186 @@ public:
 
 
 
+4.) Count subsets with sum K / Perfect sum
+
+
+--> Given an array arr[] of non-negative integers and an integer sum, the task is to count all subsets of the given array with a sum equal to a given sum.
+--> input arr[] = {2, 3, 5, 6, 8, 10}
+       sum = 10
+        Output: 3
+Explanation: {2, 3, 5}, {2, 8}, {10}
+
+
+
+Recusion solution
+
+
+class Solution{
+	public:
+	int f(int ind, int sum, int arr[])
+	{
+	    if(sum == 0)
+	        return 1;
+	    if(ind == 0)
+	        return (arr[ind] == sum);
+	    
+	    int nonpick = f(ind-1, sum, arr);
+	    int pick = 0;
+	    if(arr[ind] <= sum)
+	        pick = f(ind-1, sum-arr[ind], arr);
+	        
+	    return pick+nonpick;
+	}
+	int perfectSum(int arr[], int n, int sum)
+	{
+        return f(n-1, sum, arr);
+	}
+};
+
+
+
+recussive/ memoized solution in GFG
+
+
+class Solution{
+	public:
+	int mod = 1e9+7;
+	long f(int ind, int sum, int arr[], int n, vector<vector<long>> &dp)
+	{
+	    
+	    if(ind == 0)
+	    {  
+	       if(sum==0 and arr[0]==0) return 2;
+           if(sum==0 or sum==arr[0]) return 1;
+
+           return 0;
+	        
+	    }
+	        
+	    if(dp[ind][sum] != -1)
+	        return dp[ind][sum]%mod;
+	        
+	        
+	    long nonpick = f(ind-1, sum, arr, n, dp)%mod;
+	    long pick = 0;
+	    if(arr[ind] <= sum)
+	        pick = f(ind-1, sum-arr[ind], arr, n, dp)%mod;
+	        
+	    return dp[ind][sum] = (pick+nonpick)%mod;
+	}
+	int perfectSum(int arr[], int n, int sum)
+	{
+	    vector<vector<long>> dp(n, vector<long> (sum+1, -1));
+        return f(n-1, sum, arr, n, dp)%mod;
+        
+	}
+};
+
+
+6.) 0/1 Knapsack problem
+
+
+--> given an integer W which represents knapsack capacity, find out the maximum value subset of val[] such that sum of the weights of this subset is smaller than or equal to W.
+--> You cannot break an item, either pick the complete item or dont pick it (0-1 property).
+
+
+class Solution
+{
+    public:
+    int f(int ind, int W, int wt[], int val[], int n)
+    {
+        if(ind == 0)
+        {
+            if(wt[ind] <= W)
+                return val[0];
+            else
+                return 0;
+        }
+        
+        int nontake = 0 + f(ind-1, W, wt, val, n);
+        int take = INT_MIN;
+        if(wt[ind] <= W)
+            take = val[ind] + f(ind-1, W-wt[ind], wt, val, n);
+        
+        return max(nontake, take);
+    }
+    //Function to return max value that can be put in knapsack of capacity W.
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       
+       return f(n-1, W, wt, val, n);
+    }
+};
+
+
+
+Memoized solution:
+
+
+class Solution
+{
+    public:
+    int f(int ind, int W, int wt[], int val[], vector<vector<int>> &dp)
+    {
+        if(ind == 0)
+        {
+            if(wt[ind] <= W)
+                return val[0];
+            else
+                return 0;
+        }
+        
+        if(dp[ind][W] != -1)
+            return dp[ind][W];
+        
+        int nontake = 0 + f(ind-1, W, wt, val, dp);
+        int take = INT_MIN;
+        if(wt[ind] <= W)
+            take = val[ind] + f(ind-1, W-wt[ind], wt, val, dp);
+        
+        return dp[ind][W] = max(nontake, take);
+    }
+    //Function to return max value that can be put in knapsack of capacity W.
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       vector<vector<int>> dp(n, vector<int> (W+1, -1));
+       return f(n-1, W, wt, val, dp);
+    }
+};
+
+
+
+Tabulation solution:
+
+
+class Solution
+{
+    public:
+    
+    //Function to return max value that can be put in knapsack of capacity W.
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       vector<vector<int>> dp(n, vector<int> (W+1, 0));
+       for(int w=wt[0]; w <= W; w++)
+       {
+           dp[0][w] = val[0];//we can steal it
+       }
+       
+       for(int ind=1; ind < n; ind++)
+       {
+           for(int w=0; w <= W; w++)
+           {
+               int nontake = 0 + dp[ind-1][w];
+               int take = INT_MIN;
+                if(wt[ind] <= w)
+                    take = val[ind] + dp[ind-1][w-wt[ind]];
+                    
+                dp[ind][w] = max(nontake, take);
+           }
+       }
+       return dp[n-1][W];
+    }
+};
 
 
 
