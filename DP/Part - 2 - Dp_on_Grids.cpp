@@ -212,15 +212,15 @@ public:
 
 4.) Triangle
 
-
+--> In this qs, the recursion changes since this is fixed starting point with variable ending point
 --> Given a triangle array, return the minimum path sum from top to bottom
 --> Input: triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
 Output: 11
 Explanation: The triangle looks like:
    2
-  3 4
- 6 5 7
-4 1 8 3
+   3 4
+   6 5 7
+   4 1 8 3
 The minimum path sum from top to bottom is 2 + 3 + 5 + 1 = 11 
      
      
@@ -233,7 +233,7 @@ class Solution {
 public:
     int f(int i, int j, vector<vector<int>>& triangle, int n)
     {
-        if(i == n-1)
+        if(i == n-1)//base case looks different from the other qs, 
             return triangle[n-1][j];
         
         int down = triangle[i][j] + f(i+1, j, triangle, n);
