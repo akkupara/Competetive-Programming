@@ -214,6 +214,11 @@ Output: false
 Input: s = "paper", t = "title"
 Output: true
 	
+	
+TC = O(s.size())
+SC = O(no of different characters)
+	
+
 
 class Solution {
 public:
@@ -451,8 +456,25 @@ public:
 10.) Roman to Integer
 
 --> https://www.youtube.com/watch?v=bCA1otebP58&t=178s    important result
--->
 
+
+Input: s = "III"
+Output: 3
+Explanation: III = 3.
+	
+	
+Input: s = "LVIII"
+Output: 58
+Explanation: L = 50, V= 5, III = 3
+	
+	
+	
+Input: s = "MCMXCIV"
+Output: 1994
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4
+
+	
+	
 
 
 class Solution {
