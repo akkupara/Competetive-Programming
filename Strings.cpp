@@ -4,7 +4,18 @@
 --> while revising, it is better to do a dry run
 --> for further doubts, visit this https://www.youtube.com/watch?v=OGaiCn1eHMA
 
-
+Input: s = "(()())(())"
+Output: "()()()"
+	
+Input: s = "(()())(())(()(()))"
+Output: "()()()()(())"
+	
+	
+Input: s = "()()"
+Output: ""
+	
+	
+	
 
 class Solution {
 public:
@@ -37,11 +48,23 @@ public:
 --> tc = o(n) and sc = o(n), using extra space is the main disadvantage here
 
 
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+	
+	
+	
+Input: s = "  hello world  "
+Output: "world hello"
+	
+	
+
+
 class Solution {
 public:
     string reverseWords(string s) {
-        string result;
-        int i=0;
+        string result;//the answer which we are going to return 
+	
+        int i=0;//i denotes where the word starts and j denotes where the word ends
         int n = s.length();
         
         while(i < n)
@@ -74,6 +97,20 @@ public:
     
     
 --> interesting qs
+--> You are given a string num, representing a large integer. Return the largest-valued odd 
+integer (as a string) that is a non-empty substring of num, or an empty string "" if no odd integer exists.
+	
+Input: num = "52"
+Output: "5"
+	
+	
+Input: num = "4206"
+Output: ""
+	
+	
+Input: num = "35427"
+Output: "35427"
+Explanation: "35427" is already an odd number.
 
 
 class Solution {
@@ -95,6 +132,14 @@ public:
 4.) Longest Common Prefix
 
 --> I solved it using O(N^2), but can be optimised
+
+
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+	
+Input: strs = ["dog","racecar","car"]
+Output: ""
+	
 
 
 class Solution {
@@ -160,6 +205,16 @@ public:
 --> Two strings s and t are isomorphic if the characters in s can be replaced to get t.
 	
 	
+Input: s = "egg", t = "add"
+Output: true
+	
+Input: s = "foo", t = "bar"
+Output: false
+	
+Input: s = "paper", t = "title"
+Output: true
+	
+
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
