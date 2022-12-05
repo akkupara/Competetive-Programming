@@ -157,19 +157,7 @@ public:
 --> slight modification
 
 
-Example 1:
 
-Input: nums = [1,5,11,5]
-Output: true
-Explanation: The array can be partitioned as [1, 5, 5] and [11].
-Example 2:
-
-Input: nums = [1,2,3,5]
-Output: false
-Explanation: The array cannot be partitioned into equal sum subsets.
-	
-	
-	
 
 recususive solution: TC = O(2^N) and SC = O(N) ASS
 
@@ -602,6 +590,151 @@ class Solution
        return dp[n-1][W];
     }
 };
+
+
+
+
+7.) Coin change
+
+
+--> You are given an integer array coins representing coins of different denominations 
+--> an integer amount representing a total amount of money
+--> Return the fewest number of coins that you need to make up that amount
+--> If that amount of money cannot be made up by any combination of the coins, return -1
+	
+
+	
+Example 1:
+
+Input: coins = [1,2,5], amount = 11
+Output: 3
+Explanation: 11 = 5 + 5 + 1
+Example 2:
+
+Input: coins = [2], amount = 3
+Output: -1
+Example 3:
+
+Input: coins = [1], amount = 0
+Output: 0
+	
+	
+	
+Recursive code:
+
+
+class Solution {
+public:
+    int f(int ind, vector<int>& coins, int amount)
+    {
+        if(ind == 0)
+        {
+            if(amount % coins[ind] == 0)
+                return amount / coins[ind];
+            else
+                return 1e9;
+        }
+        int nontake = 0 + f(ind-1, coins, amount);
+        int take = INT_MAX;
+        if(coins[ind] <= amount)
+            take = 1 + f(ind, coins, amount-coins[ind]);//you stay at that index itself
+        
+        return min(take, nontake);
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        int ans = f(n-1, coins, amount);
+        if(ans >= 1e9)
+            return -1;
+        return ans;
+        
+    }
+};
+
+
+
+Memoized code:
+
+
+class Solution {
+public:
+    int f(int ind, vector<int>& coins, int amount, vector<vector<int>> &dp)
+    {
+        if(ind == 0)
+        {
+            if(amount % coins[ind] == 0)
+                return amount / coins[ind];
+            else
+                return 1e9;
+        }
+        
+        if(dp[ind][amount] != -1)
+            return dp[ind][amount];
+        
+        
+        int nontake = 0 + f(ind-1, coins, amount, dp);
+        int take = INT_MAX;
+        if(coins[ind] <= amount)
+            take = 1 + f(ind, coins, amount-coins[ind], dp);//you stay at that index itself since you can take that element till the if condition becomes false
+        
+        return dp[ind][amount] = min(take, nontake);
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        
+        vector<vector<int>> dp(n, vector<int> (amount+1, -1));
+            
+        int ans = f(n-1, coins, amount, dp);
+        if(ans >= 1e9)
+            return -1;
+        return ans;
+        
+    }
+};
+
+
+
+
+Tabulation code:
+
+
+
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        
+        vector<vector<int>> dp(n, vector<int> (amount+1, 0));
+        for(int T=0; T <= amount; T++)
+        {
+            if(T % coins[0] == 0)
+                dp[0][T] = T / coins[0];
+            else
+                dp[0][T] = 1e9;
+        }
+        
+        for(int ind = 1; ind < n; ind++)
+        {
+            for(int T=0; T <= amount; T++)
+            {
+                int nontake = 0 + dp[ind-1][T];
+                int take = INT_MAX;
+                if(coins[ind] <= T)
+                    take = 1 + dp[ind][T-coins[ind]];
+                
+                dp[ind][T] = min(take, nontake);
+            }
+        }
+           
+        int ans = dp[n-1][amount];
+        if(ans >= 1e9)
+            return -1;
+        return ans;
+        
+    }
+};
+
+
 
 
 
