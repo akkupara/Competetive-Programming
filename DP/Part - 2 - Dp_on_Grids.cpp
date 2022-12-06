@@ -10,9 +10,9 @@ class Solution {
 public:
     int f(int i, int j)
     {
-        if(i==0 && j==0)
+        if(i==0 && j==0)//if we reach 0 index, then it part of answer, cuz so return 1
             return 1;
-        if(i < 0 || j < 0)
+        if(i < 0 || j < 0)//if it goes out bound, it is not part of our answer
             return 0;
         
         int up = f(i-1, j);
