@@ -23,19 +23,18 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         int mini = prices[0];
-        int profit = INT_MIN;
+        int profit = 0;
         int n = prices.size();
         
         for(int i=0; i < n; i++)
         {
-            mini = min(mini, prices[i]);//mini to keep track min value as we traverse thru the array
             int cost = prices[i] - mini;//subtract mini with each element of the array iteratively
             profit = max(profit, cost);//check which gives the largest value
+            mini = min(mini, prices[i]);//mini to keep track min value as we traverse thru the array
+            
         }
         return profit;
-        
-     
-        
+       
     }
 };
 
@@ -63,18 +62,18 @@ public:
         
         if(buy == 1)//suppose he has the liberty to buy, there are two choices, one is he can buy or he can not buy
         {
-            int pick = -prices[ind] + f(ind+1, 0, prices, n);//if it is picked, then we move to the next index, where we cannnot buy, so buy = 0
-            int nonpick = 0 + f(ind+1, 1, prices, n);//we dont pick, so we move to the next index and we can still buy so buy = 1
+            int buy = -prices[ind] + f(ind+1, 0, prices, n);//if it is picked, then we move to the next index, where we cannnot buy, so buy = 0
+            int notbuy = 0 + f(ind+1, 1, prices, n);//we dont pick, so we move to the next index and we can still buy so buy = 1
             
-            profit = max(pick, nonpick);
+            profit = max(buy, notbuy);
         }
         else
         {
-            int pick = prices[ind] + f(ind+1, 1, prices, n);//since we sell, amount on that added and then move to the next index, keeping buy=1, since we can buy anything as we have sold before
+            int sell = prices[ind] + f(ind+1, 1, prices, n);//since we sell, amount on that added and then move to the next index, keeping buy=1, since we can buy anything as we have sold before
             
-            int nonpick = 0 + f(ind+1, 0, prices, n);// since we didnt sell, we add 0 and move to the next index, keeping buy=0, since we cannot buy anything
+            int notsell = 0 + f(ind+1, 0, prices, n);// since we didnt sell, we add 0 and move to the next index, keeping buy=0, since we cannot buy anything
             
-            profit = max(pick, nonpick);
+            profit = max(sell, notsell);
         }
         
         return profit;
@@ -146,14 +145,16 @@ public://tabulation code
         
         //for loops will be running from i-1 to 0
         for(int ind = n-1; ind >= 0; ind--)
+        {
             for(int buy = 0; buy <= 1; buy++)
+            {
                 if(buy == 1)//suppose he has the liberty to buy, there are two choices, one is //he can buy or he can not buy
                 {
                     int pick = -prices[ind] + dp[ind+1][0];//if it is picked, then we move to the next index, where we cannnot buy, so buy = 0
                     int nonpick = 0 + dp[ind+1][1];//we dont pick, so we move to the next index and we can still buy so buy = 1
 
                     profit = max(pick, nonpick);
-                    dp[ind][buy] = profit;
+                    
                 }
                 else
                 {
@@ -162,8 +163,11 @@ public://tabulation code
                     int nonpick = 0 + dp[ind+1][0];// since we didnt sell, we add 0 and move to the next index, keeping buy=0, since we cannot buy anything
 
                     profit = max(pick, nonpick);
-                    dp[ind][buy] = profit;
+                    
                 }
+              dp[ind][buy] = profit;
+            }
+        }
             
         
         return dp[0][1];//since tabulation is bottom up, we return the ans present at the top
