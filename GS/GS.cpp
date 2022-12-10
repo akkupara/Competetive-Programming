@@ -343,6 +343,31 @@ vector<vector<int>> indexPairs(string text, vector<string> &words)
 
 
 
+11.) No. of mismatching bits
+
+--> 
+Input :  A = 12, B = 15
+Output : Number of different bits : 2
+  
+Explanation: The binary representation of 
+12 is 1100 and 15 is 1111.
+  
+So, the number of different bits are 2.
+  
+  
+  
+  
+int numberOfMismatchingBits(int first, int second)
+{
+    int count = 0;
+    for(int i=0; i < 32; i++)
+    {
+        if(((first >> i) & 1) != ((second >> i) & 1))
+            count++;
+    }
+    return count;
+}
+
 
 
 
