@@ -151,3 +151,94 @@ long long maxSubarraySum(int arr[], int n){
         }
         return maxi;
     }
+
+
+
+
+
+
+4.) Merge two sorted arrays
+
+
+--> there are various methods of solving this question,
+--> gap method
+--> used a map where the property of map is used to solve the qs
+--> maps are always sorted in order
+--> using sc = O(1) is the most optimal one-------need to look into it
+
+
+
+
+
+5.) Rearrange array alternately
+	
+--> Given a sorted array of positive integers. Your task is to rearrange the array elements alternatively i.e first element should be max value, 
+second should be min value, third should be second max, fourth should be second min and so on.	
+	
+arr[] = {1,2,3,4,5,6}
+Output: 6 1 5 2 4 3
+Explanation: Max element = 6, min = 1, 
+second max = 5, second min = 2, and 
+so on... Modified array is : 6 1 5 2 4 3.
+	
+	
+There are two pointers min, max, where min points 0th index and max points to the last index
+For even indexes
+
+A[i] = A[i] + ((A[max] % N) * N)
+
+
+For odd indexes
+
+A[i] = A[i] + ((A[min] % N) * N)
+	
+	
+	
+void rearrange(long long *nums, int n) 
+    { 
+        int maxi = n-1;
+        int mini = 0;
+        
+        int N = nums[n-1]+1;
+        
+        for(int i=0; i < n; i++)
+        {
+            if(i % 2 == 0)//for even indexes
+            {
+                nums[i] = nums[i] + ((nums[maxi] % N)* N);
+                maxi--;
+            }
+            else
+            {
+                nums[i] = nums[i] + ((nums[mini] % N)* N);
+                mini++;
+            }
+        }
+        
+        for(int i=0; i < n; i++)
+        {
+            nums[i] = nums[i] / N;
+        }
+    }
+};
+
+
+
+
+
+5.) count inversion
+
+
+--> Inversion Count: For an array, inversion count indicates how far (or close) the array is from being sorted. If array is already sorted then 
+the inversion count is 0. If an array is sorted in the reverse order then the inversion count is the maximum. 
+	
+--> Formally, two elements a[i] and a[j] form an inversion if a[i] > a[j] and i < j.
+	
+Input: N = 5, arr[] = {2, 4, 1, 3, 5}
+Output: 3
+Explanation: The sequence 2, 4, 1, 3, 5 
+has three inversions (2, 1), (4, 1), (4, 3).
+	
+	
+
+	
