@@ -242,3 +242,85 @@ has three inversions (2, 1), (4, 1), (4, 3).
 	
 
 	
+6.) sort 0, 1, 2 -------> highly important
+
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+
+
+--> first sort using built in function - TC = O(N log N)
+--> use counting sort - TC = O(N) + O(N)
+	
+--> this is not binary search (dutch national flag algorthim) -- TC = O(N) use three pointers low, mid, high
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int n = nums.size();
+        
+        int low = 0, mid = 0;
+        int high = n-1;
+        
+        while(mid <= high)
+        {
+            if(nums[mid] == 0)
+            {
+                swap(nums[low], nums[mid]);
+                low++;
+                mid++;
+            }
+            else if(nums[mid] == 1)
+                mid++;
+            else if(nums[mid] == 2)
+            {
+                swap(nums[mid], nums[high]);
+                high--;
+            }
+        }
+    }
+};
+
+
+
+7.) Equilibrium Point
+
+--> Equilibrium Point in an array is a position such that the sum of elements before it is equal to the sum of elements after it.
+	
+A[] = {1,3,5,2,2} 
+Output: 3 
+Explanation:  
+equilibrium point is at position 3 
+as elements before it (1+3) = 
+elements after it (2+2). 
+	
+	
+	
+brute method - o(N^2)
+	
+
+int n = nums.size();
+        int i, j;
+        
+        int leftsum, rightsum;
+        for(i=0; i < n; i++)
+        {
+            leftsum = 0;
+            for(int j=0; j < i; j++)
+                leftsum += nums[j];
+            
+            rightsum = 0;
+            for(int j=i+1; j < n; j++)
+                rightsum += nums[j];
+            
+            if(leftsum == rightsum)
+                return i;
+        }
+        return -1;
+}
+
+
+
+Optimised soln:
+
+
