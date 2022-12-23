@@ -517,3 +517,92 @@ class Solution{
         return pq.top();
     }
 };
+
+
+
+
+12.) Last Index of one
+
+
+--> Given a string S consisting only '0's and '1's,  find the last index of the '1' present in it.
+	
+	
+Input:
+S = 00001
+Output:
+4
+Explanation:
+Last index of  1 in given string is 4.
+	
+	
+	
+class Solution{
+    public:
+    int lastIndex(string s) 
+    {
+        int n = s.size();
+        int index = -1;
+        int maxi = -1;
+        
+        for(int i=0; i < n; i++)
+        {
+            if(s[i] == '1')
+            {
+                index = i;
+                maxi = max(maxi, index);
+            }
+            
+        }
+        return maxi;
+    }
+
+};
+
+
+
+14.) Largest Number formed from an array
+
+
+Arr[] = {3, 30, 34, 5, 9}
+Output: 9534330
+Explanation: Given numbers are {3, 30, 34,
+5, 9}, the arrangement 9534330 gives the
+largest value.
+	
+	
+	
+class Solution{
+public:
+	// The main function that returns the arrangement with the largest value as
+	// string.
+	// The function accepts a vector of strings
+	static bool comparator(string s1, string s2)
+	{
+	    string first = s1 + s2;
+	    string second = s2 + s1;
+	    
+	    for(int i=0; i < first.size(); i++)
+	    {
+	        if(first[i] > second[i])//no swapping will be done
+	            return true;
+	        else if(second[i] > first[i])//sqapping will be done
+	            return false;
+	    }
+	    return false;
+	}
+	string printLargest(vector<string> &arr) {
+	    // code here
+	    int n = arr.size();
+	    string res = "";
+	    sort(arr.begin(), arr.end(), comparator);
+	    for(int i=0; i < n; i++)
+	    {
+	        res.append(arr[i]);
+	    }
+	    return res;
+	}
+};
+
+
+
+
