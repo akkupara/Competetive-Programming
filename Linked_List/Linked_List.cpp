@@ -536,7 +536,7 @@ Output: [1]
 
 
 
---> dummy node's next will point to the head
+--> dummy nodes next will point to the head
 --> basic intuition is having two pointers, fast and slow pointing to the dummy node
 --> first move the fast pointer by n(given) positions
 --> //traverse untill we fast->next is NULL and move slow and fast by 1 simultaneously
