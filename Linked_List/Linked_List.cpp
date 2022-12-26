@@ -144,7 +144,51 @@ public:
 };
 
 
+vvImp QS) Rotate list
 
+
+--> Given the head of a linked list, rotate the list to the right by k places.
+ 
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        //edge cases
+        if(!head  || !head->next || k == 0)//if 0 node or 1 node or even when k is 0, return the head itself
+            return head;
+        
+        
+        //count the no of nodes
+        ListNode* cur = head;
+        int len = 1;
+        while(cur->next != NULL)
+        {
+            cur = cur->next;
+            len++;
+        }
+        
+        
+        cur->next = head;
+        k = k % len;
+        k = len - k;//go till that node
+        
+        while(k != 0)
+        {
+            cur = cur->next;
+            k--;
+        }
+        
+        head = cur->next;//change the link
+        cur->next = NULL;
+        
+        return head;
+        
+        
+    }
+};
 
 6.) Detect Cycle in Linked List
 
