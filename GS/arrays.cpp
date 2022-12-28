@@ -57,3 +57,52 @@ public:
         
     }
 };
+
+
+
+
+2.) Remove Duplicates from sorted Array
+
+--> Return the no of unique elements presents in the array
+
+Input: nums = [1,1,2]
+Output: 2,
+
+the unique elements present are 1 and 2.
+  
+  
+Brute approach:
+
+--> put the elements into a hashset and return the size of the hashset which stores only the unique elements.
+--> TC = O(N log N) + O(N) for putting the elements into the hashset  + for again placing it back into the array
+--> SC = O(N)
+  
+  
+ 
+Optimal approach: Using Two pointer ---------------revise the approach once again
+
+
+--> TC = O(N) and SC = O(N) because we are modifying the array
+
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int n = nums.size();
+        
+        int i=0;
+        for(int j=1; j < n; j++)
+        {
+            if(nums[i] != nums[j])
+            {
+                i++;
+                nums[i] = nums[j];
+            }
+        }
+        return i+1;
+    }
+};
+
+
+
+
+3.) 
