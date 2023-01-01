@@ -85,3 +85,45 @@ public:
 
 
 
+3.) Minimise the difference between maximum height - II
+
+--> need to revise it again
+--> Given an array arr[] denoting heights of N towers and a positive integer K, 
+you have to modify the height of each tower either by increasing or decreasing them by K only once.
+  
+--> Find out what could be the possible minimum difference of the height of shortest and longest towers after you have modified each tower. 
+
+--> Same as the previous qs difference should not be negative, for that we just add one extra if condition.
+ 
+  
+  
+  
+  class Solution{   
+public:
+    int getMinDiff(int arr[], int n, int k) {
+        // code here
+        sort(arr, arr+n);
+        int currmin = arr[0];
+        int currmax = arr[n-1];
+        int ans = currmax - currmin;
+        
+        for(int i=1; i < n; i++)
+        {
+            if(arr[i] >= k)
+            {
+                currmin = min(arr[0]+k, arr[i]-k);
+                currmax = max(arr[i-1]+k, arr[n-1]-k);
+                ans = min(ans, currmax-currmin);
+            }
+            
+        }
+        return ans;
+    }
+};
+
+
+
+
+
+
+-
