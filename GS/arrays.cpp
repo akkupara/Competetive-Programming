@@ -249,3 +249,101 @@ lass Solution
 
 
 
+4.) Diagonal Traverse
+
+--> Given an m x n matrix mat, return an array of all the elements of the array in a diagonal order.
+  
+  
+Important resource:  https://www.youtube.com/watch?v=NTF7sDU0IWA
+
+class Solution {
+public:
+    vector<int> findDiagonalOrder(vector<vector<int>>& matrix) {
+        
+        int m = matrix.size();
+        int n = matrix[0].size();
+        
+        vector<int> ans;
+        
+        
+        if(matrix.size() == 0 || matrix[0].size() == 0)//if the size of the matrix is zero then return empty matrix
+            return ans;
+    
+        int i = 0;//index
+        
+        int row = 0, col = 0;//starting point where the traversal starts
+        
+        //we can either traverse in up or down direction
+        bool up = true;
+        
+        while(row < m && col < n)
+        {
+            //case I when diagonal is going up
+            if(up)
+            {
+                while(row > 0 && col < n-1)
+                {
+                    ans.push_back(matrix[row][col]);
+                    row--;
+                    col++;
+                }
+                ans.push_back(matrix[row][col]);
+                if(col == n-1)
+                    row++;
+                else
+                    col++;
+            }
+            
+            //case II when diagional is going down
+            else
+            {
+                while(col > 0 && row < m-1)
+                {
+                    ans.push_back(matrix[row][col]);
+                    row++;
+                    col--;
+                }
+                ans.push_back(matrix[row][col]);
+                if(row == m-1)
+                    col++;
+                else
+                    row++;
+            }
+            up = !up;
+        }
+        return ans;
+    }
+};
+
+
+
+5.) Diagonal Traverse II
+
+
+--> Same as the previous question but the way we traverse is different
+--> we traverse using two loops where we enter i+j, j, nums[i][j] into the 2D vector, in each diagonal taversal i+j 
+turns out to be the same
+
+class Solution {
+public:
+    vector<int> findDiagonalOrder(vector<vector<int>>& nums) {
+        
+        int n = nums.size();
+        
+        vector<vector<int>> ans;
+        for(int i=0; i < n; i++)
+        {
+            for(int j=0; j < (int)nums[i].size(); j++)
+            {
+                ans.push_back({i+j, j, nums[i][j]});//
+            }
+        }
+        sort(ans.begin(), ans.end());
+        
+        vector<int> res;
+        for(int i=0; i < (int)ans.size(); i++)
+            res.push_back(ans[i][2]);
+        
+        return res;
+    }
+};
