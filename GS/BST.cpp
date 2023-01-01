@@ -160,3 +160,51 @@ public:
 };
 
 
+
+
+
+6.)  Minimum Depth of a Binary Tree
+
+--> minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node. 
+
+    
+            1
+          /   \
+         3     2
+        /
+       4           
+
+Output: 2
+    
+    
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(root == NULL)//when the tree is empty return 0 since, the depth is zero
+            return 0;
+        if(root->left == NULL && root->right == NULL)//when the tree has only one node,
+            //then obviously the depth of the tree will be 1
+            return 1;// so we return 1 as the maximum depth
+        
+        int lh, rh;//we declare the right and left height
+        
+        if(root->left != NULL)//if left node is not NULL, then recursively travel to the left
+        {
+            lh = minDepth(root->left);// do the recursive call to root->left(other left nodes)
+        }
+        else
+            lh = INT_MAX;// if root of the left is NULL, then make it INT_MAX
+        
+        
+        if(root->right != NULL)//if right node is not NULL, then recursively travel to the right
+        {
+            rh = minDepth(root->right);// do the recursive call to root->right(other right nodes)
+        }
+        else
+            rh = INT_MAX;//if right of the root is NULL, then make it INT_MAX
+        
+        
+        return 1 + min(lh, rh);
+        
+    }
+};
