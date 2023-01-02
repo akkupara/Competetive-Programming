@@ -391,3 +391,56 @@ public:
         return true;
     }
 };
+
+
+
+
+Q) Group Anagrams
+
+
+--> Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+
+  
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+
+
+--> The idea is to maintain a map where we sort the input string index wise and keep it as key, if that key matches and add that element to that bucket
+
+
+TC = O(N * K log K), where K is the size of the individual string
+
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& str) {
+        
+        unordered_map<string, vector<string> > mpp;
+        int n = str.size();
+        string temp;//to store the original string, cuz after sorting the order changes, so we keep a copy of the original string
+        
+        for(int i=0; i < n; i++)
+        {
+            temp = str[i];
+            sort(str[i].begin(), str[i].end());//sorted string
+            mpp[str[i]].push_back(temp);//sorted string is the key
+        }
+        
+        vector<vector<string>> ans;
+        
+        for(auto it=mpp.begin(); it != mpp.end(); it++)
+            ans.push_back(it->second);
+        
+        return ans;
+    }
+};
+
+
+
+
+------------Need to optimise it
+
+
+
+
