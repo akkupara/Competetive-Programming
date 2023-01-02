@@ -347,3 +347,47 @@ public:
         return res;
     }
 };
+
+
+
+Q) CHECK IF TWO STRINGS ARE SIMILAR
+
+--> Two strings word1 and word2 are considered almost equivalent if the differences between the 
+frequencies of each letter from 'a' to 'z' between word1 and word2 is at most 3.
+  
+  
+--> here we maintain two frequency array where we take the difference of the frequency and return the answer accordingly
+
+
+class Solution {
+public:
+    bool checkAlmostEquivalent(string word1, string word2) {
+        int n = word1.size();
+        int m = word2.size();
+        
+        
+        
+        
+        int count1[26] = {0};
+        int count2[26] = {0};
+        
+        for(char c: word1)
+        {
+            count1[c - 'a']++;
+        }
+        
+        for(char c: word2)
+        {
+            count2[c - 'a']++;
+        }
+        
+        for(int i=0; i < 26; i++)
+        {
+            if(abs(count1[i]- count2[i]) > 3)
+                return false;
+        }
+        
+        
+        return true;
+    }
+};
