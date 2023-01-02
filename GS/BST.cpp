@@ -208,3 +208,64 @@ public:
         
     }
 };
+
+
+
+
+7.) Level order Traversal of a Binary Tree
+
+Input:
+        10
+     /      \
+    20       30
+  /   \
+ 40   60
+          
+          
+Output:10 20 30 40 60
+  
+  
+  
+
+--> The idea is to maintain a queue and a vector-of-vector which returns the ans
+
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> ans;//the DS which stores the ans
+        
+        if(root == NULL)
+            return ans;
+        
+        queue<TreeNode*> q;
+        q.push(root);//always push the root at the beginning
+        
+        while(!q.empty())//we iterate untill the queue becomes empty
+        {
+            int n = q.size();//size of the queue
+            vector<int> level;//stores the ans for that level
+            for(int i=0; i < n; i++)
+            {
+                TreeNode* node = q.front();
+                q.pop();//we first pop the node from the queue
+                
+                if(node->left != NULL)//we first push left
+                    q.push(node->left);
+                
+                if(node->right != NULL)//we first push right
+                    q.push(node->right);
+                
+                level.push_back(node->val);//put that node into level DS
+                
+            }
+            ans.push_back(level);//push that level traversal into ans DS
+        }
+        return ans;
+    }
+};
+
+
+
+  
+  
