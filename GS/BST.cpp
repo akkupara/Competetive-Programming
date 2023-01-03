@@ -1,4 +1,4 @@
-1.) Validate BST
+1.) Validate BST (Range of Values)
 
 
 --> Given the root of a binary tree, determine if it is a valid binary search tree (BST).
@@ -253,7 +253,7 @@ public:
                 if(node->left != NULL)//we first push left
                     q.push(node->left);
                 
-                if(node->right != NULL)//we first push right
+                if(node->right != NULL)//we then push right
                     q.push(node->right);
                 
                 level.push_back(node->val);//put that node into level DS
