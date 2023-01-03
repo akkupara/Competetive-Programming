@@ -7,7 +7,7 @@ Explanation: The sum of elements
 from 2nd position to 4th position 
 is 12.
 
-
+return the start and end index of the subarray
 
 
 class Solution
