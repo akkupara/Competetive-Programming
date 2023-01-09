@@ -92,7 +92,7 @@ public:
 
 4.) Maximum sum path in binary tree
 
---> The path sum of a path is the sum of the node's values in the path.
+--> The path sum of a path is the sum of the node s values in the path.
 
 
 /**
