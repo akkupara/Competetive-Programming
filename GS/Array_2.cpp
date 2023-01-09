@@ -266,3 +266,51 @@ class Solution{
     }
 };
 
+
+
+
+5.) Longest Substring Without Repeating Characters
+
+
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+Example 2:
+
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+  
+
+
+  
+--> Naive approach: TC = O(N*N) and SC = O(N) which is used to check the repeating characters
+
+Using kadane algorithm generate all the substrings and check the one which has the longest substring
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> mpp(256, -1);//all initialised to 0 and it can have max of 256 characters
+        
+        int n = s.size();
+        int left = 0, right = 0;//left and the right pointers
+        
+        int len = 0;//returned to be the answer
+        
+        while(right < n)//iterate till the last index
+        {
+            if(mpp[s[right]] != -1)//checking if it exists
+                left = max(mpp[s[right]] + 1, left);
+            // if it exist then move left to the ind+1
+            //if it does not exist, left stays there 
+            
+            mpp[s[right]] = right;//insert the element with new index
+            
+            len = max(len, right-left+1);//calculate max_len each iteration
+            right++;//move right to the next index
+        }
+        return len;
+    }
+};
+
